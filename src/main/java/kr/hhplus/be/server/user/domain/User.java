@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.payment.domain;
+package kr.hhplus.be.server.user.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,21 +14,21 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "payment")
+@Table(name = "user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Payment extends BaseEntity {
+public class User extends BaseEntity {
 
 	@Id
+	@Column(name = "user_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "payment_id")
-	private Long paymentId;
+	private Long userId;
 
-	@Column
-	private Integer price;
+	@Column(name = "user_name")
+	private String userName;
 
 	@Builder
-	public Payment(Long paymentId, Integer price) {
-		this.paymentId = paymentId;
-		this.price = price;
+	public User(Long userId, String userName) {
+		this.userId = userId;
+		this.userName = userName;
 	}
 }

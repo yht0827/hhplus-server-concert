@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.reserve.presentation;
+package kr.hhplus.be.server.reservation.presentation;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import kr.hhplus.be.server.reserve.presentation.dto.ReserveRequest;
-import kr.hhplus.be.server.reserve.presentation.dto.ReserveResponse;
+import kr.hhplus.be.server.reservation.presentation.dto.ReserveRequest;
+import kr.hhplus.be.server.reservation.presentation.dto.ReserveResponse;
 
 @RestController
 @RequestMapping("/reserve")
-public class ReserveController {
+public class ReservationController {
 
 	@PostMapping
 	public ResponseEntity<ReserveResponse> reserve(@RequestBody ReserveRequest request) {

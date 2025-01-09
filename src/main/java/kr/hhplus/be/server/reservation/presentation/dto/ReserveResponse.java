@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.reserve.presentation.dto;
+package kr.hhplus.be.server.reservation.presentation.dto;
 
 import lombok.Builder;
 

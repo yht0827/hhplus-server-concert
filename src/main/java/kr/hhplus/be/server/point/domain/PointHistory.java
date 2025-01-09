@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.concert.domain;
+package kr.hhplus.be.server.point.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,32 +15,32 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @Entity
-@Table(name = "concert")
+@Getter
+@Table(name = "point_history")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Concert extends BaseEntity {
+public class PointHistory extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "concert_id")
-	private Long concertId;
+	@Column(name = "point_history_id")
+	private Long pointHistoryId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "concert_schedule_id")
-	private ConcertSchedule concertSchedule;
+	@JoinColumn(name = "point_id")
+	private Point point;
 
-	@Column(name = "concert_name")
-	private String concertName;
+	@Column
+	private String type;
 
-	@Column(name = "seat_count")
-	private Integer seatCount;
+	@Column
+	private Integer amount;
 
 	@Builder
-	public Concert(Long concertId, ConcertSchedule concertSchedule, String concertName, Integer seatCount) {
-		this.concertId = concertId;
-		this.concertSchedule = concertSchedule;
-		this.concertName = concertName;
-		this.seatCount = seatCount;
+	public PointHistory(Long pointHistoryId, Point point, String type, Integer amount) {
+		this.pointHistoryId = pointHistoryId;
+		this.point = point;
+		this.type = type;
+		this.amount = amount;
 	}
 }

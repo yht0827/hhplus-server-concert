@@ -1,6 +1,4 @@
-package kr.hhplus.be.server.token.domain;
-
-import java.time.LocalDateTime;
+package kr.hhplus.be.server.seat.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,39 +9,35 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import kr.hhplus.be.server.concert.domain.Concert;
 import kr.hhplus.be.server.config.common.BaseEntity;
-import kr.hhplus.be.server.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "seat")
 @Getter
-@Table(name = "token")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Token extends BaseEntity {
+public class Seat extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "token_id")
-	private Long tokenId;
+	@Column(name = "seat_id")
+	private Long seatId;
+
+	@Column(name = "seat_number")
+	private Integer seatNumber;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private User user;
-
-	@Column
-	private TokenStatus status;
-
-	@Column(name = "expired_at")
-	private LocalDateTime expiredAt;
+	@JoinColumn(name = "concert_id")
+	private Concert concert;
 
 	@Builder
-	public Token(Long tokenId, User user, TokenStatus status, LocalDateTime expiredAt) {
-		this.tokenId = tokenId;
-		this.user = user;
-		this.status = status;
-		this.expiredAt = expiredAt;
+	public Seat(Long seatId, Integer seatNumber, Concert concert) {
+		this.seatId = seatId;
+		this.seatNumber = seatNumber;
+		this.concert = concert;
 	}
 }
