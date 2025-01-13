@@ -3,6 +3,8 @@ package kr.hhplus.be.server.token.domain.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.hhplus.be.server.common.exception.CustomException;
+import kr.hhplus.be.server.common.exception.enums.ErrorCode;
 import kr.hhplus.be.server.token.domain.entity.Token;
 import kr.hhplus.be.server.token.infrastructure.TokenRepository;
 import kr.hhplus.be.server.token.interfaces.dto.TokenRequest;
@@ -20,7 +22,9 @@ public class TokenService {
 
 	@Transactional
 	public TokenResponse createToken(final TokenRequest tokenRequest) {
-		User user = userRepository.findById(tokenRequest.userId());
+
+		User user = userRepository.findById(tokenRequest.userId())
+			.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
 		Token token = tokenRepository.save(Token.createToken(user));
 
