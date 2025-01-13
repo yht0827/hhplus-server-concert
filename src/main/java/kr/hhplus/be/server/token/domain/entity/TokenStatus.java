@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.token.domain;
+package kr.hhplus.be.server.token.domain.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,9 +7,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum TokenStatus {
 
-	WAIT("wait"),
-	ACTIVE("active"),
-	EXPIRED("expired");
+	WAIT("대기"),
+	ACTIVE("활성"),
+	EXPIRED("만료");
 
 	private final String status;
 }

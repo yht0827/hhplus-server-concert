@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import kr.hhplus.be.server.config.common.BaseEntity;
+import kr.hhplus.be.server.common.BaseEntity;
 import kr.hhplus.be.server.payment.domain.Payment;
 import kr.hhplus.be.server.seat.domain.Seat;
 import kr.hhplus.be.server.user.domain.User;

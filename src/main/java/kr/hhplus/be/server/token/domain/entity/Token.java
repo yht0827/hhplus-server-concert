@@ -1,9 +1,11 @@
-package kr.hhplus.be.server.token.domain;
+package kr.hhplus.be.server.token.domain.entity;
 
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,7 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import kr.hhplus.be.server.config.common.BaseEntity;
+import kr.hhplus.be.server.common.BaseEntity;
 import kr.hhplus.be.server.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -34,6 +36,7 @@ public class Token extends BaseEntity {
 	private User user;
 
 	@Column
+	@Enumerated(EnumType.STRING)
 	private TokenStatus status;
 
 	@Column(name = "expired_at")
@@ -46,4 +49,21 @@ public class Token extends BaseEntity {
 		this.status = status;
 		this.expiredAt = expiredAt;
 	}
+
+	public static Token createToken(User user) {
+		return Token.builder()
+			.user(user)
+			.status(TokenStatus.WAIT)
+			.expiredAt(LocalDateTime.now().plusMinutes(10))
+			.build();
+	}
+
+	public void updateStatus(TokenStatus status) {
+		this.status = status;
+	}
+
+	public void updateExpiredAt(LocalDateTime expiredAt) {
+		this.expiredAt = expiredAt;
+	}
+
 }
