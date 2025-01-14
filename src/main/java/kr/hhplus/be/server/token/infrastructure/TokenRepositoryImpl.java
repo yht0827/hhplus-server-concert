@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.token.infrastructure;
 
+import kr.hhplus.be.server.token.domain.repository.TokenRepository;
 import org.springframework.stereotype.Service;
 
 import kr.hhplus.be.server.token.domain.entity.Token;

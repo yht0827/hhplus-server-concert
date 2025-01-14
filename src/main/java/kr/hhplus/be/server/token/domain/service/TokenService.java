@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.hhplus.be.server.common.exception.CustomException;
 import kr.hhplus.be.server.common.exception.enums.ErrorCode;
 import kr.hhplus.be.server.token.domain.entity.Token;
-import kr.hhplus.be.server.token.infrastructure.TokenRepository;
+import kr.hhplus.be.server.token.domain.repository.TokenRepository;
 import kr.hhplus.be.server.token.interfaces.dto.TokenRequest;
 import kr.hhplus.be.server.token.interfaces.dto.TokenResponse;
 import kr.hhplus.be.server.user.domain.User;

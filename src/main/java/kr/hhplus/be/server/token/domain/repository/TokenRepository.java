@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.token.infrastructure;
+package kr.hhplus.be.server.token.domain.repository;
 
 import kr.hhplus.be.server.token.domain.entity.Token;
 
