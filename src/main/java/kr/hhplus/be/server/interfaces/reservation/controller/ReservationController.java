@@ -17,12 +17,7 @@ public class ReservationController {
 	@PostMapping
 	public ResponseEntity<ReserveResponse> reserve(@RequestBody ReserveRequest request) {
 
-		ReserveResponse response = ReserveResponse.builder()
-			.message("좌석 예약 성공(임시 배정)")
-			.reserveId(1L)
-			.build();
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+		return ResponseEntity.status(HttpStatus.CREATED).body(null);
 	}
 
 }
