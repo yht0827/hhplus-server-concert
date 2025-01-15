@@ -49,4 +49,12 @@ public class Token extends BaseEntity {
                 .expiredAt(LocalDateTime.now().plusMinutes(10))
                 .build();
     }
+
+    public void updateActiveStatus() {
+        this.status = TokenStatus.ACTIVE;
+    }
+
+    public void updateExpiredStatus() {
+        this.status = TokenStatus.EXPIRED;
+    }
 }
