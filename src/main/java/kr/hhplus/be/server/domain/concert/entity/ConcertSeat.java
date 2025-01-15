@@ -8,27 +8,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "seat")
+@Table(name = "concert_seat")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Seat extends BaseEntity {
+public class ConcertSeat extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "seat_id")
-    private Long seatId;
+    @Column(name = "concert_seat_id")
+    private Long concertSeatId;
 
     @Column(name = "seat_number")
     private Integer seatNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "concert_id")
-    private Concert concert;
+    @Column(name = "concert_id")
+    private Long concertId;
 
     @Builder
-    public Seat(Long seatId, Integer seatNumber, Concert concert) {
-        this.seatId = seatId;
+    public ConcertSeat(Long concertSeatId, Integer seatNumber, Long concertId) {
+        this.concertSeatId = concertSeatId;
         this.seatNumber = seatNumber;
-        this.concert = concert;
+        this.concertId = concertId;
     }
 }

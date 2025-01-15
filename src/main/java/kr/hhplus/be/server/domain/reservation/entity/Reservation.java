@@ -2,7 +2,7 @@ package kr.hhplus.be.server.domain.reservation.entity;
 
 import jakarta.persistence.*;
 import kr.hhplus.be.server.common.BaseEntity;
-import kr.hhplus.be.server.domain.concert.entity.Seat;
+import kr.hhplus.be.server.domain.concert.entity.ConcertSeat;
 import kr.hhplus.be.server.domain.payment.entity.Payment;
 import kr.hhplus.be.server.domain.user.entity.User;
 import lombok.AccessLevel;
@@ -23,7 +23,7 @@ public class Reservation extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seat_id")
-    private Seat seat;
+    private ConcertSeat concertSeat;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_id")
@@ -41,9 +41,9 @@ public class Reservation extends BaseEntity {
     }
 
     @Builder
-    public Reservation(Long reservationId, Seat seat, Payment payment, ReservationStatus status, User user) {
+    public Reservation(Long reservationId, ConcertSeat concertSeat, Payment payment, ReservationStatus status, User user) {
         this.reservationId = reservationId;
-        this.seat = seat;
+        this.concertSeat = concertSeat;
         this.payment = payment;
         this.status = status;
         this.user = user;
