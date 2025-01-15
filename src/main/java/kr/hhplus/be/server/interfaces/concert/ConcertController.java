@@ -1,13 +1,14 @@
 package kr.hhplus.be.server.interfaces.concert;
 
-import kr.hhplus.be.server.domain.concert.service.ConcertService;
+import kr.hhplus.be.server.application.ConcertFacade;
 import kr.hhplus.be.server.interfaces.concert.dto.AvailableDateResponseList;
 import kr.hhplus.be.server.interfaces.concert.dto.AvailableSeatResponseList;
+import kr.hhplus.be.server.interfaces.concert.dto.ConcertDateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -15,20 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ConcertController {
 
-    private final ConcertService concertService;
+    private final ConcertFacade concertFacade;
 
     @GetMapping("/availableDate")
     public ResponseEntity<AvailableDateResponseList> getAvailableDateList() {
-
-
-        return ResponseEntity.ok(null);
+        AvailableDateResponseList response = AvailableDateResponseList.toDto(concertFacade.getAvailableDates());
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/availableSeat")
-    public ResponseEntity<AvailableSeatResponseList> getAvailableSeatList(@RequestParam() String date) {
+    public ResponseEntity<AvailableSeatResponseList> getAvailableSeatList(
+            @ModelAttribute ConcertDateRequest concertDateRequest) {
+        AvailableSeatResponseList response = AvailableSeatResponseList
+                .toDto(concertFacade.getAvailableSeatList(concertDateRequest.date()));
 
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(response);
     }
-
-
 }

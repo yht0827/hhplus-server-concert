@@ -5,5 +5,15 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record AvailableSeatResponseList(List<ConcertSeatResponse> concertSeatResponseList, Integer size) {
+public record AvailableSeatResponseList(List<ConcertResponse.ConcertSeatResponse> concertSeatResponseList,
+                                        Integer size) {
+
+    public static AvailableSeatResponseList toDto(List<ConcertResponse.ConcertSeatResponse> concertSeatResponseList) {
+        return AvailableSeatResponseList
+                .builder()
+                .concertSeatResponseList(concertSeatResponseList)
+                .size(concertSeatResponseList.size())
+                .build();
+    }
+
 }
