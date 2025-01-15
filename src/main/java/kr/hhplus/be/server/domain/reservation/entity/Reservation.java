@@ -1,10 +1,12 @@
 package kr.hhplus.be.server.domain.reservation.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import kr.hhplus.be.server.common.BaseEntity;
-import kr.hhplus.be.server.domain.concert.entity.ConcertSeat;
-import kr.hhplus.be.server.domain.payment.entity.Payment;
-import kr.hhplus.be.server.domain.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,36 +18,29 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reservation extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "reservation_id")
-    private Long reservationId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "reservation_id")
+	private Long reservationId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seat_id")
-    private ConcertSeat concertSeat;
+	@Column(name = "concert_seat_id")
+	private Long concertSeatId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "payment_id")
-    private Payment payment;
+	@Column(name = "user_id")
+	private Long userId;
 
-    @Column
-    private ReservationStatus status;
+	@Column
+	private ReservationStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+	public enum ReservationStatus {
+		WAIT, RESERVED
+	}
 
-    public enum ReservationStatus {
-        WAIT, RESERVED
-    }
-
-    @Builder
-    public Reservation(Long reservationId, ConcertSeat concertSeat, Payment payment, ReservationStatus status, User user) {
-        this.reservationId = reservationId;
-        this.concertSeat = concertSeat;
-        this.payment = payment;
-        this.status = status;
-        this.user = user;
-    }
+	@Builder
+	public Reservation(Long reservationId, Long concertSeatId, ReservationStatus status, Long userId) {
+		this.reservationId = reservationId;
+		this.concertSeatId = concertSeatId;
+		this.status = status;
+		this.userId = userId;
+	}
 }

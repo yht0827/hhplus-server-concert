@@ -7,15 +7,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.hhplus.be.server.application.ReservationFacade;
 import kr.hhplus.be.server.interfaces.reservation.dto.ReserveRequest;
 import kr.hhplus.be.server.interfaces.reservation.dto.ReserveResponse;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/reserve")
+@RequiredArgsConstructor
 public class ReservationController {
 
+	private final ReservationFacade reservationFacade;
+
 	@PostMapping
-	public ResponseEntity<ReserveResponse> reserve(@RequestBody ReserveRequest request) {
+	public ResponseEntity<ReserveResponse> reserve(@RequestBody final ReserveRequest reserveRequest) {
+
+		reservationFacade.reserve(reserveRequest);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(null);
 	}
