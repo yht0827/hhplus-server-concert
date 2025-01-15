@@ -19,6 +19,20 @@ java {
 	}
 }
 
+val querydslDir = layout.buildDirectory.dir("generated/querydsl").get().asFile
+
+tasks.named<Test>("test") {
+	useJUnitPlatform()
+}
+
+tasks.register<Delete>("cleanQuerydsl") {
+	delete(file(querydslDir))
+}
+
+tasks.withType<JavaCompile> {
+	options.generatedSourceOutputDirectory.set(file(querydslDir))
+}
+
 repositories {
 	mavenCentral()
 }
@@ -39,6 +53,16 @@ dependencies {
 
     // DB
 	runtimeOnly("com.mysql:mysql-connector-j")
+
+	// swagger
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
+	// AOP
+	implementation("org.springframework.boot:spring-boot-starter-aop")
+	//QueryDSL
+	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+	annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
+	annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
 
     // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
