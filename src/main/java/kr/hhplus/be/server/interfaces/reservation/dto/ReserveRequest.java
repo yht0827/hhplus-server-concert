@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 
 import kr.hhplus.be.server.domain.concert.entity.ConcertSeat;
 import kr.hhplus.be.server.domain.reservation.entity.Reservation;
+import lombok.Builder;
 
+@Builder
 public record ReserveRequest(Long userId, Long concertId, Integer seatNumber) {
 
 	public Reservation toEntity(final Long concertSeatId) {
