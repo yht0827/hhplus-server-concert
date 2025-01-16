@@ -1,18 +1,20 @@
 package kr.hhplus.be.server.domain.token.repository;
 
-import kr.hhplus.be.server.domain.token.entity.Token;
-
 import java.util.List;
+
+import kr.hhplus.be.server.domain.token.entity.Token;
 
 public interface TokenRepository {
 
-    Token save(Token token);
+	Token save(final Token token);
 
-    List<Token> getAllWaitTokens();
+	List<Token> getAllWaitTokens();
 
-    List<Token> getTimeoutTokens();
+	List<Token> getTimeoutTokens();
 
-    Long updateWaitTokens(List<Long> ids);
+	Long updateWaitTokens(final List<Long> ids);
 
-    Long updateExpireTokens(List<Long> ids);
+	Long updateExpireTokens(final List<Long> ids);
+
+	Token findByUserId(final Long userId);
 }

@@ -8,6 +8,7 @@ import kr.hhplus.be.server.common.exception.enums.ErrorCode;
 import kr.hhplus.be.server.domain.point.entity.Point;
 import kr.hhplus.be.server.domain.point.entity.PointHistory;
 import kr.hhplus.be.server.domain.point.repository.PointRepository;
+import kr.hhplus.be.server.interfaces.payment.dto.PaymentConcertRequest;
 import kr.hhplus.be.server.interfaces.point.dto.ChargeRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +23,21 @@ public class PointService {
 		Point point = pointRepository.findPointByUserId(chargeRequest.userId())
 			.orElseThrow(() -> new CustomException(ErrorCode.POINT_NOT_FOUND));
 
-		point.updateBalance(chargeRequest.point());
+		point.chargePoint(chargeRequest.point());
+
+		return point;
+	}
+
+	@Transactional
+	public Point usePoint(final PaymentConcertRequest paymentConcertRequest) {
+		Point point = pointRepository.findPointByUserId(paymentConcertRequest.userId())
+			.orElseThrow(() -> new CustomException(ErrorCode.POINT_NOT_FOUND));
+
+		if (point.getBalance() < paymentConcertRequest.price()) {
+			throw new CustomException(ErrorCode.NOT_ENOUGH_BALANCE);
+		}
+
+		point.usePoint(paymentConcertRequest.price());
 
 		return point;
 	}

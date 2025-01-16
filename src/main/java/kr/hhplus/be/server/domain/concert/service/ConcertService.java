@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.hhplus.be.server.common.exception.CustomException;
 import kr.hhplus.be.server.common.exception.enums.ErrorCode;
+import kr.hhplus.be.server.domain.concert.entity.Concert;
 import kr.hhplus.be.server.domain.concert.entity.ConcertSeat;
 import kr.hhplus.be.server.domain.concert.repository.ConcertRepository;
 import kr.hhplus.be.server.interfaces.concert.dto.ConcertResponse;
@@ -75,7 +76,6 @@ public class ConcertService {
 		ConcertSeat concertSeat = concertRepository.findConcertSeat(reserveRequest.concertId(),
 			reserveRequest.seatNumber());
 
-
 		if (concertSeat == null) {
 			ConcertSeat newConcertSeat = reserveRequest.toEntity();
 
@@ -87,4 +87,9 @@ public class ConcertService {
 		return concertSeat;
 	}
 
+	@Transactional
+	public Concert getConcert(final Long concertId) {
+		return concertRepository.findConcertById(concertId)
+			.orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_FOUND));
+	}
 }

@@ -1,16 +1,15 @@
 package kr.hhplus.be.server.interfaces.payment;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.hhplus.be.server.application.PaymentFacade;
 import kr.hhplus.be.server.interfaces.payment.dto.PaymentConcertRequest;
 import kr.hhplus.be.server.interfaces.payment.dto.PaymentConcertResponse;
-import kr.hhplus.be.server.interfaces.payment.dto.PaymentHistoryResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -18,16 +17,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PaymentController {
 
+	private final PaymentFacade paymentFacade;
+
 	@PostMapping("/concert")
 	public ResponseEntity<PaymentConcertResponse> paymentConcert(
-		@RequestBody PaymentConcertRequest paymentConcertRequest) {
+		@RequestBody final PaymentConcertRequest paymentConcertRequest) {
+		PaymentConcertResponse response = PaymentConcertResponse.toDto(
+			paymentFacade.paymentConcert(paymentConcertRequest));
 
-		return ResponseEntity.ok(null);
-	}
-
-	@GetMapping("/{paymentId}")
-	public ResponseEntity<PaymentHistoryResponse> getPaymentHistory(@PathVariable("paymentId") Long paymentId) {
-
-		return ResponseEntity.ok(null);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 }

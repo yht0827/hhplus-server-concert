@@ -50,4 +50,9 @@ public class Reservation extends BaseEntity {
 		this.status = status;
 		this.expiredAt = expiredAt;
 	}
+
+	public void updateReservedStatus() {
+		this.status = ReservationStatus.RESERVED;
+	}
+
 }
