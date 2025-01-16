@@ -17,4 +17,6 @@ public interface TokenRepository {
 	Long updateExpireTokens(final List<Long> ids);
 
 	Token findByUserId(final Long userId);
+
+	Token findActiveTokenById(final Long tokenId);
 }

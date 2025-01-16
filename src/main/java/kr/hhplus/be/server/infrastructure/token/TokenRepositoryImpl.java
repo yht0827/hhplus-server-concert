@@ -37,7 +37,8 @@ public class TokenRepositoryImpl implements TokenRepository {
 	@Override
 	public List<Token> getTimeoutTokens() {
 		return jpaQueryFactory.selectFrom(token)
-			.where(token.expiredAt.before(LocalDateTime.now()))
+			.where(token.expiredAt.before(LocalDateTime.now()),
+				token.status.ne(Token.TokenStatus.EXPIRED))
 			.fetch();
 	}
 
@@ -77,6 +78,14 @@ public class TokenRepositoryImpl implements TokenRepository {
 	public Token findByUserId(final Long userId) {
 		return jpaQueryFactory.selectFrom(token)
 			.where(token.userId.eq(userId))
+			.fetchOne();
+	}
+
+	@Override
+	public Token findActiveTokenById(final Long tokenId) {
+		return jpaQueryFactory.selectFrom(token)
+			.where(token.tokenId.eq(tokenId),
+				token.status.eq(Token.TokenStatus.ACTIVE))
 			.fetchOne();
 	}
 }

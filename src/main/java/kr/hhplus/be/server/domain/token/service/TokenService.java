@@ -55,4 +55,8 @@ public class TokenService {
 		token.updateExpiredStatus();
 	}
 
+	@Transactional(readOnly = true)
+	public Token getActiveToken(final Long tokenId) {
+		return tokenRepository.findActiveTokenById(tokenId);
+	}
 }
