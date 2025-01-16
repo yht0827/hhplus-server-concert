@@ -23,12 +23,20 @@ public class Payment extends BaseEntity {
 	@Column(name = "payment_id")
 	private Long paymentId;
 
+	@Column(name = "reservation_id")
+	private Long reservationId;
+
+	@Column(name = "concert_id")
+	private Long concertId;
+
 	@Column
 	private Integer price;
 
 	@Builder
-	public Payment(Long paymentId, Integer price) {
+	public Payment(Long paymentId, Long reservationId, Long concertId, Integer price) {
 		this.paymentId = paymentId;
+		this.reservationId = reservationId;
+		this.concertId = concertId;
 		this.price = price;
 	}
 }

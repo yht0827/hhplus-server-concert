@@ -3,6 +3,7 @@ package kr.hhplus.be.server.domain.concert.repository;
 import java.util.List;
 import java.util.Optional;
 
+import kr.hhplus.be.server.domain.concert.entity.Concert;
 import kr.hhplus.be.server.domain.concert.entity.ConcertSeat;
 import kr.hhplus.be.server.interfaces.concert.dto.ConcertResponse;
 
@@ -19,5 +20,7 @@ public interface ConcertRepository {
     ConcertSeat findConcertSeat(final Long concertId, final Integer seatNumber);
 
     ConcertSeat save(final ConcertSeat concertSeat);
+
+	Optional<Concert> findConcertById(final Long concertId);
 
 }

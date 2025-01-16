@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import kr.hhplus.be.server.domain.concert.entity.Concert;
 import kr.hhplus.be.server.domain.concert.entity.ConcertSeat;
 import kr.hhplus.be.server.domain.concert.repository.ConcertRepository;
 import kr.hhplus.be.server.domain.reservation.entity.Reservation;
@@ -85,6 +86,11 @@ public class ConcertRepositoryImpl implements ConcertRepository {
 	@Override
 	public ConcertSeat save(final ConcertSeat concertSeat) {
 		return concertSeatJpaRepository.save(concertSeat);
+	}
+
+	@Override
+	public Optional<Concert> findConcertById(final Long concertId) {
+		return concertJpaRepository.findById(concertId);
 	}
 
 }
