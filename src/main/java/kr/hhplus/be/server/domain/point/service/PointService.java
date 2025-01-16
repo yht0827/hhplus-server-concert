@@ -18,17 +18,20 @@ public class PointService {
 	private final PointRepository pointRepository;
 
 	@Transactional
-	public Point savePoint(final ChargeRequest chargeRequest) {
-		Point point = chargeRequest.toEntity();
+	public Point chargePoint(final ChargeRequest chargeRequest) {
+		Point point = pointRepository.findPointByUserId(chargeRequest.userId())
+			.orElseThrow(() -> new CustomException(ErrorCode.POINT_NOT_FOUND));
 
-		return pointRepository.savePoint(point);
+		point.updateBalance(chargeRequest.point());
+
+		return point;
 	}
 
 	@Transactional
-	public PointHistory chargePointHistory(final Point point) {
+	public PointHistory chargePointHistory(final Point point, final ChargeRequest chargeRequest) {
 		PointHistory pointHistory = PointHistory.builder()
 			.pointId(point.getPointId())
-			.amount(point.getBalance())
+			.amount(chargeRequest.point())
 			.type(PointHistory.PointTypeEnum.CHARGE)
 			.comment(String.format("%d원 충전", point.getBalance()))
 			.build();
