@@ -35,7 +35,7 @@ public class ConcertConcurrencyTest {
 
 	@BeforeEach
 	void tearDown() {
-
+		reservationJpaRepository.deleteAllInBatch();
 	}
 
 	@DisplayName("동시에 여러 요청이 와도 콘서트 하나만 예약된다.")
