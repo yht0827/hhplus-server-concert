@@ -11,4 +11,6 @@ public interface PointRepository {
 	PointHistory savePointHistory(final PointHistory pointHistory);
 
 	Optional<Point> findPointById(final Long id);
+
+	Optional<Point> findPointByUserId(final Long userId);
 }

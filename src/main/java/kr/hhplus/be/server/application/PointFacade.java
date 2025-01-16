@@ -14,9 +14,9 @@ public class PointFacade {
 	private final PointService pointService;
 
 	public PointHistory chargePoint(final ChargeRequest chargeRequest) {
-		Point point = pointService.savePoint(chargeRequest);
+		Point point = pointService.chargePoint(chargeRequest);
 
-		return pointService.chargePointHistory(point);
+		return pointService.chargePointHistory(point, chargeRequest);
 	}
 
 	public Point searchPoint(final Long pointId) {
