@@ -21,10 +21,9 @@ public class ReservationController {
 
 	@PostMapping
 	public ResponseEntity<ReserveResponse> reserve(@RequestBody final ReserveRequest reserveRequest) {
+		ReserveResponse response = ReserveResponse.toDto(reservationFacade.reserve(reserveRequest));
 
-		reservationFacade.reserve(reserveRequest);
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(null);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 }

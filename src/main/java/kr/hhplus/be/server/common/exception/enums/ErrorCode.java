@@ -12,6 +12,7 @@ public enum ErrorCode {
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "유저가 존재하지 않습니다."),
 	INVALID_DATE(HttpStatus.NOT_FOUND, "유효 하지 않은 날짜"),
 	POINT_NOT_FOUND(HttpStatus.NOT_FOUND, "포인트가 존재하지 않습니다."),
+	CONCERT_SEAT_EXIST(HttpStatus.BAD_REQUEST, "이미 예약된 좌석입니다."),
 	;
 
 	private final HttpStatus status;

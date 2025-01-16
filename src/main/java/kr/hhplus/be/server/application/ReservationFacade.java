@@ -2,6 +2,7 @@ package kr.hhplus.be.server.application;
 
 import org.springframework.stereotype.Component;
 
+import kr.hhplus.be.server.domain.concert.entity.ConcertSeat;
 import kr.hhplus.be.server.domain.concert.service.ConcertService;
 import kr.hhplus.be.server.domain.reservation.entity.Reservation;
 import kr.hhplus.be.server.domain.reservation.service.ReservationService;
@@ -15,11 +16,15 @@ public class ReservationFacade {
 	private final ReservationService reservationService;
 	private final ConcertService concertService;
 
-	public void reserve(final ReserveRequest reserveRequest) {
+	public Reservation reserve(final ReserveRequest reserveRequest) {
 
-		Reservation reservation = reservationService.reserve(reserveRequest);
+		// 이미 완료된 좌석이 존재하는지 조회
+		concertService.findReservedConcertSeat(reserveRequest);
 
+		// 좌석 생성 또는 업데이트
+		ConcertSeat concertSeat = concertService.upsertConcertSeat(reserveRequest);
 
-
+		// 예약 생성
+		return reservationService.reserve(reserveRequest, concertSeat.getConcertSeatId());
 	}
 }

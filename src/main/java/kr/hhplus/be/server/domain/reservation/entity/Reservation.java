@@ -1,5 +1,7 @@
 package kr.hhplus.be.server.domain.reservation.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,15 +34,20 @@ public class Reservation extends BaseEntity {
 	@Column
 	private ReservationStatus status;
 
+	@Column(name = "expired_at")
+	private LocalDateTime expiredAt;
+
 	public enum ReservationStatus {
 		WAIT, RESERVED
 	}
 
 	@Builder
-	public Reservation(Long reservationId, Long concertSeatId, ReservationStatus status, Long userId) {
+	public Reservation(Long reservationId, Long concertSeatId, Long userId, ReservationStatus status,
+		LocalDateTime expiredAt) {
 		this.reservationId = reservationId;
 		this.concertSeatId = concertSeatId;
-		this.status = status;
 		this.userId = userId;
+		this.status = status;
+		this.expiredAt = expiredAt;
 	}
 }

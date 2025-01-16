@@ -8,8 +8,12 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.hhplus.be.server.common.exception.CustomException;
+import kr.hhplus.be.server.common.exception.enums.ErrorCode;
+import kr.hhplus.be.server.domain.concert.entity.ConcertSeat;
 import kr.hhplus.be.server.domain.concert.repository.ConcertRepository;
 import kr.hhplus.be.server.interfaces.concert.dto.ConcertResponse;
+import kr.hhplus.be.server.interfaces.reservation.dto.ReserveRequest;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -56,6 +60,31 @@ public class ConcertService {
 			));
 	}
 
+	@Transactional(readOnly = true)
+	public void findReservedConcertSeat(final ReserveRequest reserveRequest) {
+		concertRepository.findReservedConcertSeat(reserveRequest.concertId(),
+				reserveRequest.seatNumber())
+			.ifPresent(concertSeat -> {
+				throw new CustomException(ErrorCode.CONCERT_SEAT_EXIST);
+			});
+	}
 
+	@Transactional
+	public ConcertSeat upsertConcertSeat(final ReserveRequest reserveRequest) {
+
+		ConcertSeat concertSeat = concertRepository.findConcertSeat(reserveRequest.concertId(),
+			reserveRequest.seatNumber());
+
+
+		if (concertSeat == null) {
+			ConcertSeat newConcertSeat = reserveRequest.toEntity();
+
+			return concertRepository.save(newConcertSeat);
+		}
+
+		concertSeat.updateConcertSeat(reserveRequest.concertId());
+
+		return concertSeat;
+	}
 
 }

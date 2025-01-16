@@ -6,12 +6,14 @@ import static kr.hhplus.be.server.domain.concert.entity.QConcertSeat.*;
 import static kr.hhplus.be.server.domain.reservation.entity.QReservation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import kr.hhplus.be.server.domain.concert.entity.ConcertSeat;
 import kr.hhplus.be.server.domain.concert.repository.ConcertRepository;
 import kr.hhplus.be.server.domain.reservation.entity.Reservation;
 import kr.hhplus.be.server.interfaces.concert.dto.ConcertResponse;
@@ -61,6 +63,28 @@ public class ConcertRepositoryImpl implements ConcertRepository {
 			.on(reservation.concertSeatId.eq(concertSeat.concertSeatId))
 			.where(concertSeat.concertId.in(ids), reservation.status.eq(Reservation.ReservationStatus.RESERVED))
 			.fetch();
+	}
+
+	@Override
+	public Optional<ConcertSeat> findReservedConcertSeat(final Long concertId, final Integer seatNumber) {
+		return Optional.ofNullable(jpaQueryFactory.selectFrom(concertSeat)
+			.innerJoin(concertSeat)
+			.on(reservation.concertSeatId.eq(reservation.concertSeatId))
+			.where(reservation.status.eq(Reservation.ReservationStatus.RESERVED), concertSeat.concertId.eq(concertId),
+				concertSeat.seatNumber.eq(seatNumber))
+			.fetchOne());
+	}
+
+	@Override
+	public ConcertSeat findConcertSeat(final Long concertId, final Integer seatNumber) {
+		return jpaQueryFactory.selectFrom(concertSeat)
+			.where(concertSeat.concertId.eq(concertId), concertSeat.seatNumber.eq(seatNumber))
+			.fetchOne();
+	}
+
+	@Override
+	public ConcertSeat save(final ConcertSeat concertSeat) {
+		return concertSeatJpaRepository.save(concertSeat);
 	}
 
 }

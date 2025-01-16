@@ -15,8 +15,8 @@ public class ReservationService {
 	private final ReservationRepository reservationRepository;
 
 	@Transactional
-	public Reservation reserve(final ReserveRequest reserveRequest) {
-		Reservation reservation = reserveRequest.toEntity();
+	public Reservation reserve(final ReserveRequest reserveRequest, final Long concertSeatId) {
+		Reservation reservation = reserveRequest.toEntity(concertSeatId);
 
 		return reservationRepository.save(reservation);
 	}
