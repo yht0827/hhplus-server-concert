@@ -33,6 +33,6 @@ public class PointRepositoryImpl implements PointRepository {
 
 	@Override
 	public Optional<Point> findPointByUserId(final Long userId) {
-		return pointJpaRepository.findByUserId(userId);
+		return pointJpaRepository.findByUserIdWithLock(userId);
 	}
 }
