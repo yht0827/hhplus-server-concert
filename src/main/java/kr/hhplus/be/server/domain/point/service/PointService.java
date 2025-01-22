@@ -3,6 +3,7 @@ package kr.hhplus.be.server.domain.point.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.hhplus.be.server.common.annnotation.DistributeLock;
 import kr.hhplus.be.server.common.exception.CustomException;
 import kr.hhplus.be.server.common.exception.enums.ErrorCode;
 import kr.hhplus.be.server.domain.point.entity.Point;
@@ -18,7 +19,7 @@ public class PointService {
 
 	private final PointRepository pointRepository;
 
-	@Transactional
+	@DistributeLock(key = "#chargeRequest.userId()")
 	public Point chargePoint(final ChargeRequest chargeRequest) {
 		Point point = pointRepository.findPointByUserId(chargeRequest.userId())
 			.orElseThrow(() -> new CustomException(ErrorCode.POINT_NOT_FOUND));
