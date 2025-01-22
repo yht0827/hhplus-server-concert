@@ -77,12 +77,12 @@ public class ConcertService {
 			reserveRequest.seatNumber());
 
 		if (concertSeat == null) {
-			ConcertSeat newConcertSeat = reserveRequest.toEntity();
+			ConcertSeat newConcertSeat = reserveRequest.toConcertEntity();
 
 			return concertRepository.save(newConcertSeat);
 		}
 
-		concertSeat.updateConcertSeat(reserveRequest.concertId());
+		concertSeat.updateConcertSeat(concertSeat.getConcertId());
 
 		return concertSeat;
 	}

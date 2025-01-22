@@ -7,18 +7,18 @@ import kr.hhplus.be.server.domain.reservation.entity.Reservation;
 import lombok.Builder;
 
 @Builder
-public record ReserveRequest(Long userId, Long concertId, Integer seatNumber) {
+public record ReserveRequest(Long userId, Long concertId, Long concertSeatId, Integer seatNumber) {
 
-	public Reservation toEntity(final Long concertSeatId) {
+	public Reservation toReservationEntity() {
 		return Reservation.builder()
-			.concertSeatId(concertSeatId)
+			.concertSeatId(this.concertSeatId)
 			.userId(this.userId)
 			.status(Reservation.ReservationStatus.WAIT)
 			.expiredAt(LocalDateTime.now().plusMinutes(5))
 			.build();
 	}
 
-	public ConcertSeat toEntity() {
+	public ConcertSeat toConcertEntity() {
 		return ConcertSeat.builder()
 			.seatNumber(this.seatNumber)
 			.concertId(this.concertId)
