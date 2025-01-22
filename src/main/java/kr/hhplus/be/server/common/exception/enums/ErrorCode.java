@@ -17,6 +17,7 @@ public enum ErrorCode {
 	CONCERT_NOT_FOUND(HttpStatus.NOT_FOUND, "콘서트가 존재하지 않습니다."),
 	NOT_ENOUGH_BALANCE(HttpStatus.NOT_FOUND, "포인트 잔액이 충분하지 않습니다."),
 	RESERVATION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 좌석 예약이 존재하지 않습니다."),
+	DISTRIBUTE_LOCK_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "분산 락 오류"),
 	;
 
 	private final HttpStatus status;
