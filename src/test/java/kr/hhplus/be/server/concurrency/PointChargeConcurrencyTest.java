@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import kr.hhplus.be.server.application.PointFacade;
 import kr.hhplus.be.server.common.DataCleaner;
@@ -24,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @SpringBootTest
 @ActiveProfiles("test")
+@Testcontainers
 @DisplayName("포인트 충전 동시성 통합 테스트")
 public class PointChargeConcurrencyTest {
 
