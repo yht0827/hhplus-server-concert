@@ -12,14 +12,16 @@ import kr.hhplus.be.server.domain.point.repository.PointRepository;
 import kr.hhplus.be.server.interfaces.payment.dto.PaymentConcertRequest;
 import kr.hhplus.be.server.interfaces.point.dto.ChargeRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PointService {
 
 	private final PointRepository pointRepository;
 
-	@DistributeLock(key = "#chargeRequest.userId()")
+	@DistributeLock(key =  "'charge:' + #chargeRequest.userId()")
 	public Point chargePoint(final ChargeRequest chargeRequest) {
 		Point point = pointRepository.findPointByUserId(chargeRequest.userId())
 			.orElseThrow(() -> new CustomException(ErrorCode.POINT_NOT_FOUND));

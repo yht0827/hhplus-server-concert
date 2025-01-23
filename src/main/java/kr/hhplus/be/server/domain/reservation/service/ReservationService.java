@@ -19,7 +19,7 @@ public class ReservationService {
 
 	private final ReservationRepository reservationRepository;
 
-	@DistributeLock(key = "#reserveRequest.concertSeatId()")
+	@DistributeLock(key = "'reserve:' + #reserveRequest.concertSeatId()")
 	public Reservation reserve(final ReserveRequest reserveRequest) {
 		Reservation reservation = reserveRequest.toReservationEntity();
 
