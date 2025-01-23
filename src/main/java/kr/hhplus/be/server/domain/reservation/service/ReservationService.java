@@ -42,4 +42,15 @@ public class ReservationService {
 
 		return reservation;
 	}
+
+	@Transactional(readOnly = true)
+	public void checkReservedStatus(final Long reservationId) {
+		Reservation reservation = reservationRepository.findById(reservationId)
+			.orElseThrow(() -> new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
+
+		if (reservation.getStatus() == Reservation.ReservationStatus.RESERVED) {
+			throw new CustomException(ErrorCode.PAYMENT_FINISHED);
+		}
+
+	}
 }
