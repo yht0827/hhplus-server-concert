@@ -22,7 +22,7 @@ public class PaymentFacade {
 	private final ReservationService reservationService;
 	private final PointService pointService;
 
-	@Transactional
+	@DistributeLock(key = "#paymentConcertRequest.reservationId()")
 	public Payment paymentConcert(final PaymentConcertRequest paymentConcertRequest) {
 
 		// 좌석 상태 (RESERVED 인지 확인)
