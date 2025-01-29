@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.interfaces.payment;
+package kr.hhplus.be.server.interfaces.payment.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/payment")
 @RequiredArgsConstructor
-public class PaymentController {
+public class PaymentController implements PaymentAPI {
 
 	private final PaymentFacade paymentFacade;
 

@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.interfaces.concert;
+package kr.hhplus.be.server.interfaces.concert.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.hhplus.be.server.application.reservation.facade.ReservationFacade;
+import kr.hhplus.be.server.interfaces.concert.port.in.ConcertDateRequest;
 import kr.hhplus.be.server.interfaces.concert.port.out.AvailableDateResponseList;
 import kr.hhplus.be.server.interfaces.concert.port.out.AvailableSeatResponseList;
-import kr.hhplus.be.server.interfaces.concert.port.in.ConcertDateRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/concert")
 @RequiredArgsConstructor
-public class ConcertController {
+public class ConcertController implements ConcertAPI {
 
 	private final ReservationFacade reservationFacade;
 

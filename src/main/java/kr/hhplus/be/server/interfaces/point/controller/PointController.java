@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/point")
 @RequiredArgsConstructor
-public class PointController {
+public class PointController implements PointAPI {
 
 	private final PaymentFacade paymentFacade;
 

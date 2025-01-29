@@ -4,11 +4,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import kr.hhplus.be.server.common.exception.CustomException;
 import kr.hhplus.be.server.common.exception.enums.ErrorCode;
 
-public record ConcertDateRequest(String date) {
-
+public record ConcertDateRequest(
+	@Schema(description = "날짜", example = "20250125")
+	String date
+) {
 	public ConcertDateRequest {
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");

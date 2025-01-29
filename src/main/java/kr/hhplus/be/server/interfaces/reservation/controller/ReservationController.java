@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/reserve")
 @RequiredArgsConstructor
-public class ReservationController {
+public class ReservationController implements ReservationAPI {
 
 	private final ReservationFacade reservationFacade;
 
@@ -27,5 +27,4 @@ public class ReservationController {
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
-
 }
