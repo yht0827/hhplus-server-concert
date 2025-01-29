@@ -23,4 +23,10 @@ public class ReservationRepositoryImpl implements ReservationRepository {
 	public Optional<Reservation> findById(final Long id) {
 		return reservationJpaRepository.findById(id);
 	}
+
+	@Override
+	public Optional<Reservation> findReservedConcertSeat(final Long concertSeatId) {
+		return reservationJpaRepository.findByConcertSeatId(concertSeatId);
+	}
+
 }

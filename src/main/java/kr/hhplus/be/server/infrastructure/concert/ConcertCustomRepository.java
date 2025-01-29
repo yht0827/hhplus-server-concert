@@ -1,17 +1,12 @@
-package kr.hhplus.be.server.domain.concert.repository;
+package kr.hhplus.be.server.infrastructure.concert;
 
 import java.util.List;
 import java.util.Optional;
 
-import kr.hhplus.be.server.domain.concert.entity.Concert;
 import kr.hhplus.be.server.domain.concert.entity.ConcertSeat;
 import kr.hhplus.be.server.interfaces.concert.dto.ConcertResponse;
 
-public interface ConcertRepository {
-
-	ConcertSeat save(final ConcertSeat concertSeat);
-
-	Optional<Concert> findConcertById(final Long concertId);
+public interface ConcertCustomRepository {
 
 	List<ConcertResponse.ConcertDateResponse> getAvailableConcertList();
 

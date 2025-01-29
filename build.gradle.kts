@@ -68,6 +68,10 @@ dependencies {
     // jasypt
     implementation("org.jasypt:jasypt:1.9.3")
 
+    // redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("org.redisson:redisson-spring-boot-starter:3.41.0")
+
     // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
