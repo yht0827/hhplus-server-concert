@@ -1,16 +1,17 @@
 package kr.hhplus.be.server.domain.reservation.service;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.hhplus.be.server.common.annnotation.DistributeLock;
+import kr.hhplus.be.server.application.reservation.port.in.ReserveSeatRequest;
 import kr.hhplus.be.server.common.exception.CustomException;
 import kr.hhplus.be.server.common.exception.enums.ErrorCode;
 import kr.hhplus.be.server.domain.reservation.entity.Reservation;
+import kr.hhplus.be.server.domain.reservation.entity.ReservationSeat;
 import kr.hhplus.be.server.domain.reservation.repository.ReservationRepository;
-import kr.hhplus.be.server.interfaces.reservation.dto.ReserveRequest;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -19,38 +20,46 @@ public class ReservationService {
 
 	private final ReservationRepository reservationRepository;
 
-	@DistributeLock(key = "'reserve:' + #reserveRequest.concertSeatId()")
-	public Reservation reserve(final ReserveRequest reserveRequest) {
-		Reservation reservation = reserveRequest.toReservationEntity();
+	public Reservation reserve(final ReserveSeatRequest reserveSeatRequest) {
+		boolean isPresent = reservationRepository.findByConcertSeatId(reserveSeatRequest.concertSeatId()).isPresent();
 
-		Optional<Reservation> existingReservation = reservationRepository.findReservedConcertSeat(
-			reservation.getConcertSeatId());
-
-		if (existingReservation.isPresent()) {
+		if (isPresent) {
 			throw new CustomException(ErrorCode.CONCERT_SEAT_EXIST);
 		}
 
-		return reservationRepository.save(reservation);
+		return reservationRepository.save(reserveSeatRequest.toReservationEntity());
 	}
 
-	@Transactional
 	public Reservation updateStatus(final Long reservationId) {
 		Reservation reservation = reservationRepository.findById(reservationId)
 			.orElseThrow(() -> new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
 
-		reservation.updateReservedStatus();
+		if (reservation.getExpiredAt().isAfter(LocalDateTime.now())) {
+			throw new CustomException(ErrorCode.RESERVATION_TIME_OUT);
+		}
+
+		if (reservation.getReservationStatus().equals(Reservation.ReservationStatus.RESERVED)) {
+			throw new CustomException(ErrorCode.PAYMENT_FINISHED);
+		}
+
+		reservation.updateReservedStatus(Reservation.ReservationStatus.RESERVED);
 
 		return reservation;
 	}
 
-	@Transactional(readOnly = true)
-	public void checkReservedStatus(final Long reservationId) {
-		Reservation reservation = reservationRepository.findById(reservationId)
-			.orElseThrow(() -> new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
+	public void createReservationSeat(final Long reservationId, final Long concertSeatId) {
+		ReservationSeat reservationSeat = ReservationSeat.toEntity(reservationId, concertSeatId);
 
-		if (reservation.getStatus() == Reservation.ReservationStatus.RESERVED) {
-			throw new CustomException(ErrorCode.PAYMENT_FINISHED);
-		}
+		reservationRepository.save(reservationSeat);
+	}
 
+	@Transactional
+	public Long updateExpiredReservation() {
+		List<Long> ids = reservationRepository.findAllByExpiredReservation()
+			.stream()
+			.map(Reservation::getReservationId)
+			.toList();
+
+		return reservationRepository.updateCancelReservation(ids);
 	}
 }

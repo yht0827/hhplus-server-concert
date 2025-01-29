@@ -23,16 +23,21 @@ public class ConcertSchedule extends BaseEntity {
 	@Column(name = "concert_schedule_id")
 	private Long concertScheduleId;
 
-	@Column(name = "concert_date")
-	private String concertDate;
+	@Column(name = "schedule_date")
+	private String scheduleDate;
 
-	@Column(name = "concert_time")
-	private String concertTime;
+	@Column(name = "concert_start_time")
+	private String concertStartTime;
+
+	@Column(name = "concert_end_time")
+	private String concertEndTime;
 
 	@Builder
-	public ConcertSchedule(Long concertScheduleId, String concertDate, String concertTime) {
+	public ConcertSchedule(Long concertScheduleId, String scheduleDate, String concertStartTime,
+		String concertEndTime) {
 		this.concertScheduleId = concertScheduleId;
-		this.concertDate = concertDate;
-		this.concertTime = concertTime;
+		this.scheduleDate = scheduleDate;
+		this.concertStartTime = concertStartTime;
+		this.concertEndTime = concertEndTime;
 	}
 }

@@ -15,11 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import kr.hhplus.be.server.application.PointFacade;
+import kr.hhplus.be.server.application.payment.facade.PaymentFacade;
+import kr.hhplus.be.server.application.payment.port.in.ChargePointRequest;
 import kr.hhplus.be.server.common.DataCleaner;
 import kr.hhplus.be.server.domain.point.entity.Point;
 import kr.hhplus.be.server.infrastructure.point.PointJpaRepository;
-import kr.hhplus.be.server.interfaces.point.dto.ChargeRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PointChargeConcurrencyTest {
 
 	@Autowired
-	private PointFacade pointFacade;
+	private PaymentFacade paymentFacade;
 
 	@Autowired
 	private PointJpaRepository pointJpaRepository;
@@ -62,15 +62,12 @@ public class PointChargeConcurrencyTest {
 		AtomicInteger failCount = new AtomicInteger(0);
 
 		// when
-		ChargeRequest chargeRequest = ChargeRequest.builder()
-			.point(5000)
-			.userId(1L)
-			.build();
+		ChargePointRequest chargePointRequest = new ChargePointRequest(1L, 5000);
 
 		for (int i = 0; i < numberOfThreads; i++) {
 			executorService.submit(() -> {
 				try {
-					pointFacade.chargePoint(chargeRequest);
+					paymentFacade.chargePoint(chargePointRequest);
 					successCount.incrementAndGet();
 				} catch (Exception e) {
 					failCount.incrementAndGet();

@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import kr.hhplus.be.server.application.PaymentFacade;
-import kr.hhplus.be.server.interfaces.payment.dto.PaymentConcertRequest;
-import kr.hhplus.be.server.interfaces.payment.dto.PaymentConcertResponse;
+import kr.hhplus.be.server.application.payment.facade.PaymentFacade;
+import kr.hhplus.be.server.application.payment.port.out.PaymentResponse;
+import kr.hhplus.be.server.interfaces.payment.port.in.PaymentConcertRequest;
+import kr.hhplus.be.server.interfaces.payment.port.out.PaymentConcertResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -22,8 +23,9 @@ public class PaymentController {
 	@PostMapping("/concert")
 	public ResponseEntity<PaymentConcertResponse> paymentConcert(
 		@RequestBody final PaymentConcertRequest paymentConcertRequest) {
-		PaymentConcertResponse response = PaymentConcertResponse.toDto(
-			paymentFacade.paymentConcert(paymentConcertRequest));
+		PaymentResponse paymentResponse = paymentFacade.paymentConcert(paymentConcertRequest.toDto());
+
+		PaymentConcertResponse response = PaymentConcertResponse.toDto(paymentResponse);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}

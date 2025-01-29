@@ -2,6 +2,8 @@ package kr.hhplus.be.server.domain.payment.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,17 +28,47 @@ public class Payment extends BaseEntity {
 	@Column(name = "reservation_id")
 	private Long reservationId;
 
-	@Column(name = "concert_id")
-	private Long concertId;
-
 	@Column
 	private Integer price;
 
+	@Column(name = "payment_status")
+	@Enumerated(EnumType.STRING)
+	private PaymentStatus paymentStatus;
+
+	@Column(name = "payment_type")
+	@Enumerated(EnumType.STRING)
+	private PaymentType paymentType;
+
+	public enum PaymentType {
+		POINT, CARD, TOSS
+	}
+
+	public enum PaymentStatus {
+		PENDING, COMPLETED, CANCELLED
+	}
+
 	@Builder
-	public Payment(Long paymentId, Long reservationId, Long concertId, Integer price) {
+	public Payment(final Long paymentId, final Long reservationId, final Integer price,
+		final PaymentStatus paymentStatus, final PaymentType paymentType) {
 		this.paymentId = paymentId;
 		this.reservationId = reservationId;
-		this.concertId = concertId;
 		this.price = price;
+		this.paymentStatus = paymentStatus;
+		this.paymentType = paymentType;
 	}
+
+	public void updateStatus(PaymentStatus status) {
+		this.paymentStatus = status;
+	}
+
+	public static Payment toEntity(final Long reservationId, final Integer price, final PaymentStatus paymentStatus,
+		final PaymentType paymentType) {
+		return Payment.builder()
+			.reservationId(reservationId)
+			.price(price)
+			.paymentStatus(paymentStatus)
+			.paymentType(paymentType)
+			.build();
+	}
+
 }

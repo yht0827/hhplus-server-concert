@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.hhplus.be.server.application.token.port.in.SignTokenRequest;
 import kr.hhplus.be.server.common.exception.CustomException;
 import kr.hhplus.be.server.common.exception.enums.ErrorCode;
 import kr.hhplus.be.server.domain.token.entity.Token;
 import kr.hhplus.be.server.domain.token.repository.TokenRepository;
-import kr.hhplus.be.server.interfaces.token.dto.TokenRequest;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -19,9 +19,8 @@ public class TokenService {
 	private final TokenRepository tokenRepository;
 	private static final Integer MAX_TOKEN_COUNT = 50;
 
-	@Transactional
-	public Token createToken(final TokenRequest tokenRequest) {
-		Token token = Token.createToken(tokenRequest.userId());
+	public Token createToken(final SignTokenRequest signTokenRequest) {
+		Token token = Token.createToken(signTokenRequest.userId());
 
 		return tokenRepository.save(token);
 	}
@@ -44,7 +43,6 @@ public class TokenService {
 		return tokenRepository.updateExpireTokens(timeoutTokenIdList);
 	}
 
-	@Transactional
 	public void updateExpireToken(final Long userId) {
 		Token token = tokenRepository.findByUserId(userId);
 
@@ -56,7 +54,8 @@ public class TokenService {
 	}
 
 	@Transactional(readOnly = true)
-	public Token getActiveToken(final Long tokenId) {
+	public Token checkValidToken(final Long tokenId) {
 		return tokenRepository.findActiveTokenById(tokenId);
 	}
+
 }

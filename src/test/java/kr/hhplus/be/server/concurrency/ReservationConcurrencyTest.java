@@ -15,10 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import kr.hhplus.be.server.application.ReservationFacade;
+import kr.hhplus.be.server.application.reservation.facade.ReservationFacade;
+import kr.hhplus.be.server.application.reservation.port.in.ReserveSeatRequest;
 import kr.hhplus.be.server.common.DataCleaner;
 import kr.hhplus.be.server.infrastructure.reservation.ReservationJpaRepository;
-import kr.hhplus.be.server.interfaces.reservation.dto.ReserveRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -53,16 +53,11 @@ public class ReservationConcurrencyTest {
 		AtomicInteger failCount = new AtomicInteger(0);
 
 		for (int i = 0; i < numberOfThreads; i++) {
-			ReserveRequest reserveRequest = ReserveRequest.builder()
-				.userId((long)i + 1)
-				.concertId(1L)
-				.concertSeatId(1L)
-				.seatNumber(1)
-				.build();
+			ReserveSeatRequest reserveSeatRequest = new ReserveSeatRequest(((long)i + 1), 1L, 1);
 
 			executorService.submit(() -> {
 				try {
-					reservationFacade.reserve(reserveRequest);
+					reservationFacade.reserve(reserveSeatRequest);
 					successCount.incrementAndGet();
 				} catch (Exception e) {
 					failCount.incrementAndGet();

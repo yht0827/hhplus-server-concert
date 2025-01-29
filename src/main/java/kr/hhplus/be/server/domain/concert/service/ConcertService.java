@@ -6,15 +6,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import kr.hhplus.be.server.application.payment.port.in.PaymentRequest;
+import kr.hhplus.be.server.application.reservation.port.in.ReserveSeatRequest;
 import kr.hhplus.be.server.common.exception.CustomException;
 import kr.hhplus.be.server.common.exception.enums.ErrorCode;
-import kr.hhplus.be.server.domain.concert.entity.Concert;
 import kr.hhplus.be.server.domain.concert.entity.ConcertSeat;
 import kr.hhplus.be.server.domain.concert.repository.ConcertRepository;
-import kr.hhplus.be.server.interfaces.concert.dto.ConcertResponse;
-import kr.hhplus.be.server.interfaces.reservation.dto.ReserveRequest;
+import kr.hhplus.be.server.interfaces.concert.port.out.ConcertResponse;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -23,17 +22,14 @@ public class ConcertService {
 
 	private final ConcertRepository concertRepository;
 
-	@Transactional(readOnly = true)
 	public List<ConcertResponse.ConcertDateResponse> getAvailableDates() {
 		return concertRepository.getAvailableConcertList();
 	}
 
-	@Transactional(readOnly = true)
 	public List<ConcertResponse.ConcertSeatResponse> getAvailableSeatList(final String date) {
 		return concertRepository.getAvailableDateConcertSeatList(date);
 	}
 
-	@Transactional(readOnly = true)
 	public List<ConcertResponse.ConcertSeatInfoResponse> getReservedSeatList(final List<Long> ids) {
 		return concertRepository.getReservedSeatList(ids);
 	}
@@ -61,35 +57,23 @@ public class ConcertService {
 			));
 	}
 
-	@Transactional(readOnly = true)
-	public void findReservedConcertSeat(final ReserveRequest reserveRequest) {
-		concertRepository.findReservedConcertSeat(reserveRequest.concertId(),
-				reserveRequest.seatNumber())
-			.ifPresent(concertSeat -> {
-				throw new CustomException(ErrorCode.CONCERT_SEAT_EXIST);
-			});
-	}
+	public ConcertSeat getAvailableSeat(final ReserveSeatRequest reserveSeatRequest) {
+		ConcertSeat concertSeat = concertRepository.findByConcertSeatId(reserveSeatRequest.concertSeatId())
+			.orElseThrow(() -> new CustomException(ErrorCode.SEAT_NOT_FOUND));
 
-	@Transactional
-	public ConcertSeat upsertConcertSeat(final ReserveRequest reserveRequest) {
+		if (concertSeat.getIsOccupied())
+			throw new CustomException(ErrorCode.CONCERT_SEAT_EXIST);
 
-		ConcertSeat concertSeat = concertRepository.findConcertSeat(reserveRequest.concertId(),
-			reserveRequest.seatNumber());
-
-		if (concertSeat == null) {
-			ConcertSeat newConcertSeat = reserveRequest.toConcertEntity();
-
-			return concertRepository.save(newConcertSeat);
-		}
-
-		concertSeat.updateConcertSeat(concertSeat.getConcertId());
+		concertSeat.reserved();
 
 		return concertSeat;
 	}
 
-	@Transactional
-	public Concert getConcert(final Long concertId) {
-		return concertRepository.findConcertById(concertId)
-			.orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_FOUND));
+	public Integer getSeatPrice(final ReserveSeatRequest reserveSeatRequest) {
+		return concertRepository.getConcertPrice(reserveSeatRequest.concertSeatId());
+	}
+
+	public void decreaseSeatCount(final PaymentRequest paymentRequest) {
+		concertRepository.decreaseConcertSeatNumber(paymentRequest.concertId());
 	}
 }
