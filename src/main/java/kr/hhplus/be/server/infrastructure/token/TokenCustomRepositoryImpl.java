@@ -71,11 +71,4 @@ public class TokenCustomRepositoryImpl implements TokenCustomRepository {
 			.fetchOne();
 	}
 
-	@Override
-	public Token findActiveTokenById(final Long tokenId) {
-		return jpaQueryFactory.selectFrom(token)
-			.where(token.tokenId.eq(tokenId),
-				token.tokenStatus.eq(Token.TokenStatus.ACTIVE))
-			.fetchOne();
-	}
 }

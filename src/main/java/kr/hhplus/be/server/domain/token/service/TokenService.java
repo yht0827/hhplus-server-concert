@@ -54,8 +54,13 @@ public class TokenService {
 	}
 
 	@Transactional(readOnly = true)
-	public Token checkValidToken(final Long tokenId) {
-		return tokenRepository.findActiveTokenById(tokenId);
+	public void checkValidToken(final Long tokenId) {
+		Token token = tokenRepository.findByTokenId(tokenId)
+			.orElseThrow(() -> new CustomException(ErrorCode.TOKEN_NOT_FOUND));
+
+		if (token.getTokenStatus() == Token.TokenStatus.EXPIRED) {
+			throw new CustomException(ErrorCode.INVALID_TOKEN);
+		}
 	}
 
 }

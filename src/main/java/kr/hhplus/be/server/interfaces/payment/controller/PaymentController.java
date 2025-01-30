@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.hhplus.be.server.application.payment.facade.PaymentFacade;
 import kr.hhplus.be.server.application.payment.port.out.PaymentResponse;
+import kr.hhplus.be.server.common.annnotation.AuthorizationToken;
 import kr.hhplus.be.server.interfaces.payment.port.in.PaymentConcertRequest;
 import kr.hhplus.be.server.interfaces.payment.port.out.PaymentConcertResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class PaymentController implements PaymentAPI {
 	private final PaymentFacade paymentFacade;
 
 	@PostMapping("/concert")
+	@AuthorizationToken
 	public ResponseEntity<PaymentConcertResponse> paymentConcert(
 		@RequestBody final PaymentConcertRequest paymentConcertRequest) {
 		PaymentResponse paymentResponse = paymentFacade.paymentConcert(paymentConcertRequest.toDto());

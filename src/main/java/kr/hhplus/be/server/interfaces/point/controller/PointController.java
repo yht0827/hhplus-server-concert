@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.hhplus.be.server.application.payment.facade.PaymentFacade;
 import kr.hhplus.be.server.application.payment.port.out.PointChargeResponse;
+import kr.hhplus.be.server.common.annnotation.AuthorizationToken;
 import kr.hhplus.be.server.interfaces.point.port.in.ChargeRequest;
 import kr.hhplus.be.server.interfaces.point.port.out.ChargeResponse;
 import kr.hhplus.be.server.interfaces.point.port.out.SearchPointResponse;
@@ -23,6 +24,7 @@ public class PointController implements PointAPI {
 	private final PaymentFacade paymentFacade;
 
 	@GetMapping("/{pointId}")
+	@AuthorizationToken
 	public ResponseEntity<SearchPointResponse> getPoint(@PathVariable final Long pointId) {
 		SearchPointResponse response = SearchPointResponse.toDto(paymentFacade.getPoint(pointId));
 
@@ -30,6 +32,7 @@ public class PointController implements PointAPI {
 	}
 
 	@PostMapping
+	@AuthorizationToken
 	public ResponseEntity<ChargeResponse> chargePoint(@RequestBody final ChargeRequest chargeRequest) {
 
 		PointChargeResponse pointChargeResponse = paymentFacade.chargePoint(chargeRequest.toDto());
