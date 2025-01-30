@@ -3,6 +3,9 @@ package kr.hhplus.be.server.domain.concert.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import kr.hhplus.be.server.domain.concert.entity.Concert;
 import kr.hhplus.be.server.domain.concert.entity.ConcertSeat;
 import kr.hhplus.be.server.interfaces.concert.port.out.ConcertResponse;
@@ -13,9 +16,10 @@ public interface ConcertRepository {
 
 	Optional<Concert> findConcertById(final Long concertId);
 
-	List<ConcertResponse.ConcertDateResponse> getAvailableConcertList();
+	Page<ConcertResponse.ConcertDateResponse> getAvailableConcertList(final Pageable pageable);
 
-	List<ConcertResponse.ConcertSeatResponse> getAvailableDateConcertSeatList(final String date);
+	Page<ConcertResponse.ConcertSeatResponse> getAvailableDateConcertSeatList(final String date,
+		final Pageable pageable);
 
 	List<ConcertResponse.ConcertSeatInfoResponse> getReservedSeatList(final List<Long> ids);
 

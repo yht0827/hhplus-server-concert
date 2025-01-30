@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import kr.hhplus.be.server.application.payment.port.in.PaymentRequest;
@@ -22,19 +24,19 @@ public class ConcertService {
 
 	private final ConcertRepository concertRepository;
 
-	public List<ConcertResponse.ConcertDateResponse> getAvailableDates() {
-		return concertRepository.getAvailableConcertList();
+	public Page<ConcertResponse.ConcertDateResponse> getAvailableDates(final Pageable pageable) {
+		return concertRepository.getAvailableConcertList(pageable);
 	}
 
-	public List<ConcertResponse.ConcertSeatResponse> getAvailableSeatList(final String date) {
-		return concertRepository.getAvailableDateConcertSeatList(date);
+	public Page<ConcertResponse.ConcertSeatResponse> getAvailableSeatList(final String date, final Pageable pageable) {
+		return concertRepository.getAvailableDateConcertSeatList(date, pageable);
 	}
 
 	public List<ConcertResponse.ConcertSeatInfoResponse> getReservedSeatList(final List<Long> ids) {
 		return concertRepository.getReservedSeatList(ids);
 	}
 
-	public List<Long> extractConcertIds(List<ConcertResponse.ConcertSeatResponse> availableSeatList) {
+	public List<Long> extractConcertIds(Page<ConcertResponse.ConcertSeatResponse> availableSeatList) {
 		return availableSeatList.stream()
 			.map(ConcertResponse.ConcertSeatResponse::getConcertId)
 			.toList();
@@ -49,7 +51,7 @@ public class ConcertService {
 			));
 	}
 
-	public void updateAvailableSeats(List<ConcertResponse.ConcertSeatResponse> availableSeatList,
+	public void updateAvailableSeats(Page<ConcertResponse.ConcertSeatResponse> availableSeatList,
 		Map<Long, List<Integer>> reservedSeatMap) {
 		availableSeatList.forEach(concertSeat ->
 			concertSeat.updateAvailableSeat(
