@@ -7,7 +7,7 @@ import kr.hhplus.be.server.application.token.port.in.SignTokenRequest;
 import kr.hhplus.be.server.application.token.port.out.SignTokenResponse;
 import kr.hhplus.be.server.domain.token.entity.Token;
 import kr.hhplus.be.server.domain.token.service.TokenService;
-import kr.hhplus.be.server.domain.token.util.TokenUtil;
+import kr.hhplus.be.server.common.util.TokenUtil;
 import lombok.RequiredArgsConstructor;
 
 @Component

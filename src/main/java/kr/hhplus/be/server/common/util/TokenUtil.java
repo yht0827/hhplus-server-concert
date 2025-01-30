@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.domain.token.util;
+package kr.hhplus.be.server.common.util;
 
 import org.jasypt.util.text.AES256TextEncryptor;
 
