@@ -25,7 +25,7 @@ public class ConcertResponse {
 		@Schema(description = "콘서트 종료 시간", example = "22:00")
 		String concertEndTime,
 
-		@Schema(description = "좌석 개수", example = "2")
+		@Schema(description = "예약 가능 좌석 개수", example = "15")
 		Integer seatCount
 	) {
 	}
@@ -44,10 +44,10 @@ public class ConcertResponse {
 		@Schema(description = "콘서트 종료 시간", example = "22:00")
 		private final String concertEndTime;
 
-		@Schema(description = "사용 중인 좌석")
+		@Schema(description = "사용 중인 좌석", example = "1, 2, 3, 4, 10")
 		private List<Integer> usedSeats;
 
-		@Schema(description = "좌석 개수", example = "2")
+		@Schema(description = "좌석 개수", example = "35")
 		private final Integer availableSeatCount;
 
 		@Builder

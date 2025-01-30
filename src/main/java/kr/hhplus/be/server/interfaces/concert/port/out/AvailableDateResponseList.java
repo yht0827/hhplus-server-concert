@@ -10,7 +10,7 @@ public record AvailableDateResponseList(
 	@Schema(description = "예약 가능한 날짜 리스트")
 	List<ConcertResponse.ConcertDateResponse> concertDateResponseList,
 
-	@Schema(description = "리스트 개수", example = "2")
+	@Schema(description = "리스트 개수", example = "1")
 	Integer size
 ) {
 	public static AvailableDateResponseList toDto(List<ConcertResponse.ConcertDateResponse> concertDateResponseList) {
