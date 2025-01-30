@@ -20,15 +20,15 @@ public class TokenCustomRepositoryImpl implements TokenCustomRepository {
 	@Override
 	public List<Token> getAllWaitTokens() {
 		return jpaQueryFactory.selectFrom(token)
-			.where(token.status.eq(Token.TokenStatus.WAIT))
+			.where(token.tokenStatus.eq(Token.TokenStatus.WAIT))
 			.fetch();
 	}
 
 	@Override
 	public List<Token> getTimeoutTokens() {
 		return jpaQueryFactory.selectFrom(token)
-			.where(token.expiredAt.before(LocalDateTime.now()),
-				token.status.ne(Token.TokenStatus.EXPIRED))
+			.where(token.expiredAt.after(LocalDateTime.now()),
+				token.tokenStatus.ne(Token.TokenStatus.EXPIRED))
 			.fetch();
 	}
 
@@ -37,7 +37,7 @@ public class TokenCustomRepositoryImpl implements TokenCustomRepository {
 
 		// WAIT -> ACTIVE
 		long count = jpaQueryFactory.update(token)
-			.set(token.status, Token.TokenStatus.ACTIVE)
+			.set(token.tokenStatus, Token.TokenStatus.ACTIVE)
 			.where(token.tokenId.in(ids))
 			.execute();
 
@@ -53,7 +53,7 @@ public class TokenCustomRepositoryImpl implements TokenCustomRepository {
 
 		// WAIT, ACTIVE -> EXPIRED
 		long count = jpaQueryFactory.update(token)
-			.set(token.status, Token.TokenStatus.EXPIRED)
+			.set(token.tokenStatus, Token.TokenStatus.EXPIRED)
 			.where(token.tokenId.in(ids))
 			.execute();
 
@@ -71,11 +71,4 @@ public class TokenCustomRepositoryImpl implements TokenCustomRepository {
 			.fetchOne();
 	}
 
-	@Override
-	public Token findActiveTokenById(final Long tokenId) {
-		return jpaQueryFactory.selectFrom(token)
-			.where(token.tokenId.eq(tokenId),
-				token.status.eq(Token.TokenStatus.ACTIVE))
-			.fetchOne();
-	}
 }

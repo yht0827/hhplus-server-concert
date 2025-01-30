@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import kr.hhplus.be.server.domain.concert.entity.Concert;
 import kr.hhplus.be.server.domain.concert.entity.ConcertSeat;
 import kr.hhplus.be.server.domain.concert.repository.ConcertRepository;
-import kr.hhplus.be.server.interfaces.concert.dto.ConcertResponse;
+import kr.hhplus.be.server.interfaces.concert.port.out.ConcertResponse;
 import lombok.RequiredArgsConstructor;
 
 @Repository
@@ -18,6 +18,7 @@ public class ConcertRepositoryImpl implements ConcertRepository {
 	private final ConcertJpaRepository concertJpaRepository;
 	private final ConcertScheduleJpaRepository concertScheduleJpaRepository;
 	private final ConcertSeatJpaRepository concertSeatJpaRepository;
+	private final ConcertSeatCategoryJpaRepository concertSeatCategoryJpaRepository;
 
 	@Override
 	public ConcertSeat save(final ConcertSeat concertSeat) {
@@ -41,17 +42,22 @@ public class ConcertRepositoryImpl implements ConcertRepository {
 
 	@Override
 	public List<ConcertResponse.ConcertSeatInfoResponse> getReservedSeatList(final List<Long> ids) {
-		return concertJpaRepository.getReservedSeatList(ids);
+		return concertSeatJpaRepository.getReservedSeatList(ids);
 	}
 
 	@Override
-	public Optional<ConcertSeat> findReservedConcertSeat(final Long concertId, final Integer seatNumber) {
-		return concertJpaRepository.findReservedConcertSeat(concertId, seatNumber);
+	public Optional<ConcertSeat> findByConcertSeatId(final Long concertSeatId) {
+		return concertSeatJpaRepository.findById(concertSeatId);
 	}
 
 	@Override
-	public ConcertSeat findConcertSeat(final Long concertId, final Integer seatNumber) {
-		return concertJpaRepository.findConcertSeat(concertId, seatNumber);
+	public Integer getConcertPrice(final Long concertSeatId) {
+		return concertSeatJpaRepository.getConcertPrice(concertSeatId);
+	}
+
+	@Override
+	public Long decreaseConcertSeatNumber(final Long concertId) {
+		return concertJpaRepository.decreaseConcertSeatNumber(concertId);
 	}
 
 }

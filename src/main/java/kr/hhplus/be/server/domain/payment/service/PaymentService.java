@@ -1,13 +1,13 @@
 package kr.hhplus.be.server.domain.payment.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import kr.hhplus.be.server.application.payment.port.in.PaymentRequest;
 import kr.hhplus.be.server.common.exception.CustomException;
 import kr.hhplus.be.server.common.exception.enums.ErrorCode;
 import kr.hhplus.be.server.domain.payment.entity.Payment;
 import kr.hhplus.be.server.domain.payment.repository.PaymentRepository;
-import kr.hhplus.be.server.interfaces.payment.dto.PaymentConcertRequest;
+import kr.hhplus.be.server.domain.reservation.entity.Reservation;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -15,16 +15,20 @@ import lombok.RequiredArgsConstructor;
 public class PaymentService {
 	private final PaymentRepository paymentRepository;
 
-	@Transactional
-	public Payment paymentConcert(final PaymentConcertRequest paymentConcertRequest) {
-		Payment payment = paymentConcertRequest.toEntity();
+	public Payment paymentConcert(final PaymentRequest paymentRequest) {
+		Payment payment = paymentRepository.findByReservationId(paymentRequest.reservationId())
+			.orElseThrow(() -> new CustomException(ErrorCode.PAYMENT_NOT_FOUND));
 
-		boolean isPresent = paymentRepository.findByReservationId(paymentConcertRequest.reservationId())
-			.isPresent();
+		payment.updateStatus(Payment.PaymentStatus.COMPLETED);
 
-		if (isPresent) {
-			throw new CustomException(ErrorCode.PAYMENT_FINISHED);
-		}
+		return payment;
+	}
+
+	public Payment createPayment(final Reservation reservation, final Integer price) {
+		Payment payment = Payment.toEntity(reservation.getReservationId(), price, Payment.PaymentStatus.PENDING,
+			Payment.PaymentType.POINT);
+
 		return paymentRepository.save(payment);
 	}
+
 }

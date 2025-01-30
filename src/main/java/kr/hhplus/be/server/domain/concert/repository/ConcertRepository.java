@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import kr.hhplus.be.server.domain.concert.entity.Concert;
 import kr.hhplus.be.server.domain.concert.entity.ConcertSeat;
-import kr.hhplus.be.server.interfaces.concert.dto.ConcertResponse;
+import kr.hhplus.be.server.interfaces.concert.port.out.ConcertResponse;
 
 public interface ConcertRepository {
 
@@ -19,7 +19,9 @@ public interface ConcertRepository {
 
 	List<ConcertResponse.ConcertSeatInfoResponse> getReservedSeatList(final List<Long> ids);
 
-	Optional<ConcertSeat> findReservedConcertSeat(final Long concertId, final Integer seatNumber);
+	Optional<ConcertSeat> findByConcertSeatId(final Long concertSeatId);
 
-	ConcertSeat findConcertSeat(final Long concertId, final Integer seatNumber);
+	Integer getConcertPrice(final Long concertSeatId);
+
+	Long decreaseConcertSeatNumber(final Long concertId);
 }

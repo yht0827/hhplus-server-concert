@@ -1,6 +1,7 @@
 package kr.hhplus.be.server.domain.token.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import kr.hhplus.be.server.domain.token.entity.Token;
 
@@ -18,5 +19,5 @@ public interface TokenRepository {
 
 	Token findByUserId(final Long userId);
 
-	Token findActiveTokenById(final Long tokenId);
+	Optional<Token> findByTokenId(final Long tokenId);
 }

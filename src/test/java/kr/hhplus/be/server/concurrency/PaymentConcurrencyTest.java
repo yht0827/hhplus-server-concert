@@ -16,7 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import kr.hhplus.be.server.application.PaymentFacade;
+import kr.hhplus.be.server.application.payment.facade.PaymentFacade;
+import kr.hhplus.be.server.application.payment.port.in.PaymentRequest;
 import kr.hhplus.be.server.common.DataCleaner;
 import kr.hhplus.be.server.domain.concert.entity.Concert;
 import kr.hhplus.be.server.domain.point.entity.Point;
@@ -29,7 +30,6 @@ import kr.hhplus.be.server.infrastructure.point.PointJpaRepository;
 import kr.hhplus.be.server.infrastructure.reservation.ReservationJpaRepository;
 import kr.hhplus.be.server.infrastructure.token.TokenJpaRepository;
 import kr.hhplus.be.server.infrastructure.user.UserJpaRepository;
-import kr.hhplus.be.server.interfaces.payment.dto.PaymentConcertRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -75,17 +75,12 @@ public class PaymentConcurrencyTest {
 		AtomicInteger failCount = new AtomicInteger(0);
 
 		// when
-		PaymentConcertRequest paymentConcertRequest = PaymentConcertRequest.builder()
-			.userId(1L)
-			.concertId(1L)
-			.reservationId(1L)
-			.price(50000)
-			.build();
+		PaymentRequest paymentRequest = new PaymentRequest(1L, 1L, 1L, 50000);
 
 		for (int i = 0; i < numberOfThreads; i++) {
 			executorService.submit(() -> {
 				try {
-					paymentFacade.paymentConcert(paymentConcertRequest);
+					paymentFacade.paymentConcert(paymentRequest);
 
 					successCount.incrementAndGet();
 				} catch (Exception e) {
@@ -131,8 +126,7 @@ public class PaymentConcurrencyTest {
 
 		Reservation reservation = Reservation.builder()
 			.userId(1L)
-			.status(Reservation.ReservationStatus.WAIT)
-			.concertSeatId(1L)
+			.reservationStatus(Reservation.ReservationStatus.WAIT)
 			.expiredAt(LocalDateTime.now().plusMinutes(5))
 			.build();
 
@@ -140,7 +134,7 @@ public class PaymentConcurrencyTest {
 
 		Token token = Token.builder()
 			.userId(1L)
-			.status(Token.TokenStatus.ACTIVE)
+			.tokenStatus(Token.TokenStatus.ACTIVE)
 			.expiredAt(LocalDateTime.now().plusMinutes(5))
 			.build();
 

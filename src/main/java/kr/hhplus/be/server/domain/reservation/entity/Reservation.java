@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,34 +27,31 @@ public class Reservation extends BaseEntity {
 	@Column(name = "reservation_id")
 	private Long reservationId;
 
-	@Column(name = "concert_seat_id")
-	private Long concertSeatId;
-
 	@Column(name = "user_id")
 	private Long userId;
 
-	@Column
-	private ReservationStatus status;
+	@Column(name = "reservation_status")
+	@Enumerated(EnumType.STRING)
+	private ReservationStatus reservationStatus;
 
 	@Column(name = "expired_at")
 	private LocalDateTime expiredAt;
 
 	public enum ReservationStatus {
-		WAIT, RESERVED
+		WAIT, RESERVED, CANCELLED
 	}
 
 	@Builder
-	public Reservation(Long reservationId, Long concertSeatId, Long userId, ReservationStatus status,
+	public Reservation(Long reservationId, Long userId, ReservationStatus reservationStatus,
 		LocalDateTime expiredAt) {
 		this.reservationId = reservationId;
-		this.concertSeatId = concertSeatId;
 		this.userId = userId;
-		this.status = status;
+		this.reservationStatus = reservationStatus;
 		this.expiredAt = expiredAt;
 	}
 
-	public void updateReservedStatus() {
-		this.status = ReservationStatus.RESERVED;
+	public void updateReservedStatus(ReservationStatus reservationStatus) {
+		this.reservationStatus = reservationStatus;
 	}
 
 }

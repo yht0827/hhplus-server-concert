@@ -1,6 +1,7 @@
 package kr.hhplus.be.server.infrastructure.token;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -45,7 +46,7 @@ public class TokenRepositoryImpl implements TokenRepository {
 	}
 
 	@Override
-	public Token findActiveTokenById(final Long tokenId) {
-		return tokenJpaRepository.findActiveTokenById(tokenId);
+	public Optional<Token> findByTokenId(final Long tokenId) {
+		return tokenJpaRepository.findByTokenId(tokenId);
 	}
 }

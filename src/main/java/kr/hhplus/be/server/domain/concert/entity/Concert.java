@@ -32,9 +32,6 @@ public class Concert extends BaseEntity {
 	@Column(name = "seat_count")
 	private Integer seatCount;
 
-	@Column(name = "concert_price")
-	private Integer concertPrice;
-
 	@Builder
 	public Concert(Long concertId, Long concertScheduleId, String concertName, Integer seatCount,
 		Integer concertPrice) {
@@ -42,6 +39,5 @@ public class Concert extends BaseEntity {
 		this.concertScheduleId = concertScheduleId;
 		this.concertName = concertName;
 		this.seatCount = seatCount;
-		this.concertPrice = concertPrice;
 	}
 }
