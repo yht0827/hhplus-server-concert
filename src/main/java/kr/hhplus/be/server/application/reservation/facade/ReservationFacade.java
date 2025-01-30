@@ -3,6 +3,8 @@ package kr.hhplus.be.server.application.reservation.facade;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,15 +50,16 @@ public class ReservationFacade {
 	}
 
 	@Transactional(readOnly = true)
-	public List<ConcertResponse.ConcertDateResponse> getAvailableDates() {
-		return concertService.getAvailableDates();
+	public Page<ConcertResponse.ConcertDateResponse> getAvailableDates(final Pageable pageable) {
+		return concertService.getAvailableDates(pageable);
 	}
 
 	@Transactional(readOnly = true)
-	public List<ConcertResponse.ConcertSeatResponse> getAvailableSeatList(final String date) {
+	public Page<ConcertResponse.ConcertSeatResponse> getAvailableSeatList(final String date, final Pageable pageable) {
 
 		// 사용 가능한 좌석 리스트 조회
-		List<ConcertResponse.ConcertSeatResponse> availableSeatList = concertService.getAvailableSeatList(date);
+		Page<ConcertResponse.ConcertSeatResponse> availableSeatList = concertService.getAvailableSeatList(date,
+			pageable);
 
 		//  콘서트 ID 리스트 추출
 		List<Long> concertIds = concertService.extractConcertIds(availableSeatList);

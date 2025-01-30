@@ -3,6 +3,8 @@ package kr.hhplus.be.server.infrastructure.concert;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import kr.hhplus.be.server.domain.concert.entity.Concert;
@@ -31,13 +33,14 @@ public class ConcertRepositoryImpl implements ConcertRepository {
 	}
 
 	@Override
-	public List<ConcertResponse.ConcertDateResponse> getAvailableConcertList() {
-		return concertJpaRepository.getAvailableConcertList();
+	public Page<ConcertResponse.ConcertDateResponse> getAvailableConcertList(final Pageable pageable) {
+		return concertJpaRepository.getAvailableConcertList(pageable);
 	}
 
 	@Override
-	public List<ConcertResponse.ConcertSeatResponse> getAvailableDateConcertSeatList(final String date) {
-		return concertJpaRepository.getAvailableDateConcertSeatList(date);
+	public Page<ConcertResponse.ConcertSeatResponse> getAvailableDateConcertSeatList(final String date,
+		final Pageable pageable) {
+		return concertJpaRepository.getAvailableDateConcertSeatList(date, pageable);
 	}
 
 	@Override
