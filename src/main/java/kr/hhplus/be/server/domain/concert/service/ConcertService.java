@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import kr.hhplus.be.server.application.payment.port.in.PaymentRequest;
+import kr.hhplus.be.server.application.payment.port.in.PaymentCommand;
 import kr.hhplus.be.server.application.reservation.port.in.ReserveCommand;
 import kr.hhplus.be.server.support.exception.CustomException;
 import kr.hhplus.be.server.support.exception.enums.ErrorCode;
@@ -75,7 +75,7 @@ public class ConcertService {
 		return concertRepository.getConcertPrice(reserveCommand.concertSeatId());
 	}
 
-	public void decreaseSeatCount(final PaymentRequest paymentRequest) {
-		concertRepository.decreaseConcertSeatNumber(paymentRequest.concertId());
+	public void decreaseSeatCount(final PaymentCommand paymentCommand) {
+		concertRepository.decreaseConcertSeatNumber(paymentCommand.concertId());
 	}
 }

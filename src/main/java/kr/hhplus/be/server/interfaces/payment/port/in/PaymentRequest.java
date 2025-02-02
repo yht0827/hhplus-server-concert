@@ -1,11 +1,11 @@
 package kr.hhplus.be.server.interfaces.payment.port.in;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import kr.hhplus.be.server.application.payment.port.in.PaymentRequest;
+import kr.hhplus.be.server.application.payment.port.in.PaymentCommand;
 import lombok.Builder;
 
 @Builder
-public record PaymentConcertRequest(
+public record PaymentRequest(
 	@Schema(description = "예약 ID", example = "1")
 	Long reservationId,
 
@@ -18,7 +18,7 @@ public record PaymentConcertRequest(
 	@Schema(description = "콘서트 좌석 가격", example = "50000")
 	Integer price
 ) {
-	public PaymentRequest toDto() {
-		return new PaymentRequest(reservationId, userId, concertId, price);
+	public PaymentCommand toDto() {
+		return new PaymentCommand(reservationId, userId, concertId, price);
 	}
 }

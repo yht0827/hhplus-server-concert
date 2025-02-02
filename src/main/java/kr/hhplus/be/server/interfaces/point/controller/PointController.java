@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.hhplus.be.server.application.payment.facade.PaymentFacade;
-import kr.hhplus.be.server.application.payment.port.out.PointChargeResponse;
+import kr.hhplus.be.server.application.payment.port.out.ChargeInfo;
 import kr.hhplus.be.server.support.annnotation.AuthorizationToken;
 import kr.hhplus.be.server.interfaces.point.port.in.ChargeRequest;
 import kr.hhplus.be.server.interfaces.point.port.out.ChargeResponse;
-import kr.hhplus.be.server.interfaces.point.port.out.SearchPointResponse;
+import kr.hhplus.be.server.interfaces.point.port.out.PointResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -25,8 +25,8 @@ public class PointController implements PointAPI {
 
 	@GetMapping("/{pointId}")
 	@AuthorizationToken
-	public ResponseEntity<SearchPointResponse> getPoint(@PathVariable final Long pointId) {
-		SearchPointResponse response = SearchPointResponse.toDto(paymentFacade.getPoint(pointId));
+	public ResponseEntity<PointResponse> getPoint(@PathVariable final Long pointId) {
+		PointResponse response = PointResponse.toDto(paymentFacade.getPoint(pointId));
 
 		return ResponseEntity.ok(response);
 	}
@@ -35,8 +35,8 @@ public class PointController implements PointAPI {
 	@AuthorizationToken
 	public ResponseEntity<ChargeResponse> chargePoint(@RequestBody final ChargeRequest chargeRequest) {
 
-		PointChargeResponse pointChargeResponse = paymentFacade.chargePoint(chargeRequest.toDto());
-		ChargeResponse response = ChargeResponse.toDto(pointChargeResponse);
+		ChargeInfo chargeInfo = paymentFacade.chargePoint(chargeRequest.toDto());
+		ChargeResponse response = ChargeResponse.toDto(chargeInfo);
 
 		return ResponseEntity.ok(response);
 	}

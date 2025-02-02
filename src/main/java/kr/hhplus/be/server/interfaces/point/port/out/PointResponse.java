@@ -5,13 +5,13 @@ import kr.hhplus.be.server.domain.point.entity.Point;
 import lombok.Builder;
 
 @Builder
-public record SearchPointResponse(
-	@Schema(description = "사용자 ID", example = "1")
+public record PointResponse(
+	@Schema(description = "잔액 포인트", example = "1000")
 	Integer balance
 ) {
 
-	public static SearchPointResponse toDto(Point point) {
-		return SearchPointResponse.builder()
+	public static PointResponse toDto(Point point) {
+		return PointResponse.builder()
 			.balance(point.getBalance())
 			.build();
 	}

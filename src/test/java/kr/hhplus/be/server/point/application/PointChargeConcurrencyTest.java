@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import kr.hhplus.be.server.application.payment.port.in.ChargePointRequest;
+import kr.hhplus.be.server.application.payment.port.in.ChargeCommand;
 import kr.hhplus.be.server.domain.point.entity.Point;
 import kr.hhplus.be.server.support.BaseIntegrationTest;
 import lombok.extern.slf4j.Slf4j;
@@ -38,12 +38,12 @@ public class PointChargeConcurrencyTest extends BaseIntegrationTest {
 		AtomicInteger failCount = new AtomicInteger(0);
 
 		// when
-		ChargePointRequest chargePointRequest = new ChargePointRequest(1L, 5000);
+		ChargeCommand chargeCommand = new ChargeCommand(1L, 5000);
 
 		for (int i = 0; i < numberOfThreads; i++) {
 			executorService.submit(() -> {
 				try {
-					paymentFacade.chargePoint(chargePointRequest);
+					paymentFacade.chargePoint(chargeCommand);
 					successCount.incrementAndGet();
 				} catch (Exception e) {
 					failCount.incrementAndGet();

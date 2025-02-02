@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.hhplus.be.server.application.reservation.port.in.ReserveCommand;
-import kr.hhplus.be.server.application.reservation.port.out.ReservationResponse;
+import kr.hhplus.be.server.application.reservation.port.out.ReserveInfo;
 import kr.hhplus.be.server.support.annnotation.DistributeLock;
 import kr.hhplus.be.server.domain.concert.service.ConcertService;
 import kr.hhplus.be.server.domain.payment.entity.Payment;
@@ -29,7 +29,7 @@ public class ReservationFacade {
 
 	@DistributeLock(key = "'reserve:' + #reserveRequest.concertSeatId()")
 	@Transactional
-	public ReservationResponse reserve(final ReserveCommand reserveCommand) {
+	public ReserveInfo reserve(final ReserveCommand reserveCommand) {
 
 		// 좌석 상태 업데이트 변경
 		concertService.getAvailableSeat(reserveCommand);
@@ -46,7 +46,7 @@ public class ReservationFacade {
 		// 결제 생성
 		Payment payment = paymentService.createPayment(reservation, seatPrice);
 
-		return ReservationResponse.toDto(reservation, payment);
+		return ReserveInfo.toDto(reservation, payment);
 	}
 
 	@Transactional(readOnly = true)

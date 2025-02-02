@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import kr.hhplus.be.server.application.payment.port.in.PaymentRequest;
+import kr.hhplus.be.server.application.payment.port.in.PaymentCommand;
 import kr.hhplus.be.server.support.BaseIntegrationTest;
 import kr.hhplus.be.server.domain.concert.entity.Concert;
 import kr.hhplus.be.server.domain.point.entity.Point;
@@ -44,12 +44,12 @@ public class PaymentConcurrencyTest extends BaseIntegrationTest {
 		AtomicInteger failCount = new AtomicInteger(0);
 
 		// when
-		PaymentRequest paymentRequest = new PaymentRequest(1L, 1L, 1L, 50000);
+		PaymentCommand paymentCommand = new PaymentCommand(1L, 1L, 1L, 50000);
 
 		for (int i = 0; i < numberOfThreads; i++) {
 			executorService.submit(() -> {
 				try {
-					paymentFacade.paymentConcert(paymentRequest);
+					paymentFacade.paymentConcert(paymentCommand);
 
 					successCount.incrementAndGet();
 				} catch (Exception e) {
