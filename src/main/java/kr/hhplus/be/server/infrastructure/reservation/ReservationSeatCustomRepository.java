@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import kr.hhplus.be.server.domain.reservation.entity.Reservation;
 
-public interface ReservationSeatJpaCustomRepository {
+public interface ReservationSeatCustomRepository {
 
 	Optional<Reservation> findByConcertSeatId(final Long concertSeatId);
 }

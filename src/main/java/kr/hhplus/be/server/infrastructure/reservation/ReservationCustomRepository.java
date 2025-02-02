@@ -4,7 +4,7 @@ import java.util.List;
 
 import kr.hhplus.be.server.domain.reservation.entity.Reservation;
 
-public interface ReservationJpaCustomRepository {
+public interface ReservationCustomRepository {
 
 	List<Reservation> findAllByExpiredReservation();
 

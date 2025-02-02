@@ -5,14 +5,17 @@ import static kr.hhplus.be.server.domain.reservation.entity.QReservation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import jakarta.persistence.EntityManager;
 import kr.hhplus.be.server.domain.reservation.entity.Reservation;
 import lombok.RequiredArgsConstructor;
 
+@Repository
 @RequiredArgsConstructor
-public class ReservationJpaCustomRepositoryImpl implements ReservationJpaCustomRepository {
+public class ReservationCustomRepositoryImpl implements ReservationCustomRepository {
 
 	private final JPAQueryFactory jpaQueryFactory;
 	private final EntityManager entityManager;

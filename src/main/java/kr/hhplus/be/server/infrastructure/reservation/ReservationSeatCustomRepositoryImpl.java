@@ -7,13 +7,16 @@ import static kr.hhplus.be.server.domain.reservation.entity.QReservationSeat.*;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import kr.hhplus.be.server.domain.reservation.entity.Reservation;
 import lombok.RequiredArgsConstructor;
 
+@Repository
 @RequiredArgsConstructor
-public class ReservationSeatJpaCustomRepositoryImpl implements ReservationSeatJpaCustomRepository {
+public class ReservationSeatCustomRepositoryImpl implements ReservationSeatCustomRepository {
 
 	private final JPAQueryFactory jpaQueryFactory;
 

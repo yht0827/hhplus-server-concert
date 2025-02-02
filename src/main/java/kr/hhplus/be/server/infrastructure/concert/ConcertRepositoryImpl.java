@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import kr.hhplus.be.server.domain.concert.entity.Concert;
 import kr.hhplus.be.server.domain.concert.entity.ConcertSeat;
 import kr.hhplus.be.server.domain.concert.repository.ConcertRepository;
 import kr.hhplus.be.server.interfaces.concert.port.out.ConcertResponse;
@@ -25,11 +24,6 @@ public class ConcertRepositoryImpl implements ConcertRepository {
 	@Override
 	public ConcertSeat save(final ConcertSeat concertSeat) {
 		return concertSeatJpaRepository.save(concertSeat);
-	}
-
-	@Override
-	public Optional<Concert> findConcertById(final Long concertId) {
-		return concertJpaRepository.findById(concertId);
 	}
 
 	@Override
