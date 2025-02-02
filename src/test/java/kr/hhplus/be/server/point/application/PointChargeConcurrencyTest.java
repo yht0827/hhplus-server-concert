@@ -9,21 +9,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import kr.hhplus.be.server.application.payment.port.in.ChargePointRequest;
-import kr.hhplus.be.server.support.ServiceIntegrationTest;
 import kr.hhplus.be.server.domain.point.entity.Point;
+import kr.hhplus.be.server.support.BaseIntegrationTest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@SpringBootTest
-@ActiveProfiles("test")
-@Testcontainers
 @DisplayName("포인트 충전 동시성 통합 테스트")
-public class PointChargeConcurrencyTest extends ServiceIntegrationTest {
+public class PointChargeConcurrencyTest extends BaseIntegrationTest {
 
 	@DisplayName("동시에 포인트 충전 10회 수행")
 	@Test

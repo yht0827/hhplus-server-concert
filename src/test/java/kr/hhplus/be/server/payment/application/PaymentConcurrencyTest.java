@@ -15,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import kr.hhplus.be.server.application.payment.port.in.PaymentRequest;
-import kr.hhplus.be.server.support.ServiceIntegrationTest;
+import kr.hhplus.be.server.support.BaseIntegrationTest;
 import kr.hhplus.be.server.domain.concert.entity.Concert;
 import kr.hhplus.be.server.domain.point.entity.Point;
 import kr.hhplus.be.server.domain.reservation.entity.Reservation;
@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @ActiveProfiles("test")
 @Testcontainers
 @DisplayName("결제 동시성 통합 테스트")
-public class PaymentConcurrencyTest extends ServiceIntegrationTest {
+public class PaymentConcurrencyTest extends BaseIntegrationTest {
 
 	@DisplayName("동시에 여러 요청이 와도 결제는 한번만 성공한다.")
 	@Test

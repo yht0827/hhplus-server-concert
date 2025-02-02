@@ -27,7 +27,7 @@ public class PaymentFacade {
 	private final ReservationService reservationService;
 	private final ConcertService concertService;
 
-	@DistributeLock(key = "'charge:' + #ChargePointRequest.userId()")
+	@DistributeLock(key = "'charge:' + #chargePointRequest.userId()")
 	@Transactional
 	public PointChargeResponse chargePoint(final ChargePointRequest chargePointRequest) {
 		Point point = pointService.chargePoint(chargePointRequest);
@@ -42,7 +42,7 @@ public class PaymentFacade {
 		return pointService.getPoint(pointId);
 	}
 
-	@DistributeLock(key = "'payment:' + #PaymentRequest.reservationId()")
+	@DistributeLock(key = "'payment:' + #paymentRequest.reservationId()")
 	@Transactional
 	public PaymentResponse paymentConcert(final PaymentRequest paymentRequest) {
 

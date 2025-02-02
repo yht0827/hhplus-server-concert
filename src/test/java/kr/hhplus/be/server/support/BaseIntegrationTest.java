@@ -2,6 +2,9 @@ package kr.hhplus.be.server.support;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 import kr.hhplus.be.server.application.payment.facade.PaymentFacade;
 import kr.hhplus.be.server.application.reservation.facade.ReservationFacade;
@@ -12,7 +15,10 @@ import kr.hhplus.be.server.infrastructure.reservation.ReservationJpaRepository;
 import kr.hhplus.be.server.infrastructure.token.TokenJpaRepository;
 import kr.hhplus.be.server.infrastructure.user.UserJpaRepository;
 
-public abstract class ServiceIntegrationTest {
+@Import(TestContainerConfiguration.class)
+@SpringBootTest
+@ActiveProfiles("test")
+public abstract class BaseIntegrationTest {
 
 	@Autowired
 	protected PointJpaRepository pointJpaRepository;

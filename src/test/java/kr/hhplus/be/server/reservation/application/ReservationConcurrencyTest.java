@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import kr.hhplus.be.server.application.reservation.port.in.ReserveCommand;
-import kr.hhplus.be.server.support.ServiceIntegrationTest;
+import kr.hhplus.be.server.support.BaseIntegrationTest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @ActiveProfiles("test")
 @Testcontainers
 @DisplayName("좌석 예약 동시성 통합 테스트")
-public class ReservationConcurrencyTest extends ServiceIntegrationTest {
+public class ReservationConcurrencyTest extends BaseIntegrationTest {
 
 	@DisplayName("동시에 여러 요청이 와도 좌석 하나만 예약된다.")
 	@Test
