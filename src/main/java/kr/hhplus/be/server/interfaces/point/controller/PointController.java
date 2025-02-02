@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.hhplus.be.server.application.payment.facade.PaymentFacade;
 import kr.hhplus.be.server.application.payment.port.out.PointChargeResponse;
-import kr.hhplus.be.server.common.annnotation.AuthorizationToken;
+import kr.hhplus.be.server.support.annnotation.AuthorizationToken;
 import kr.hhplus.be.server.interfaces.point.port.in.ChargeRequest;
 import kr.hhplus.be.server.interfaces.point.port.out.ChargeResponse;
 import kr.hhplus.be.server.interfaces.point.port.out.SearchPointResponse;

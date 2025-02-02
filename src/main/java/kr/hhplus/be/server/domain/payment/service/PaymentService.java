@@ -3,8 +3,8 @@ package kr.hhplus.be.server.domain.payment.service;
 import org.springframework.stereotype.Service;
 
 import kr.hhplus.be.server.application.payment.port.in.PaymentRequest;
-import kr.hhplus.be.server.common.exception.CustomException;
-import kr.hhplus.be.server.common.exception.enums.ErrorCode;
+import kr.hhplus.be.server.support.exception.CustomException;
+import kr.hhplus.be.server.support.exception.enums.ErrorCode;
 import kr.hhplus.be.server.domain.payment.entity.Payment;
 import kr.hhplus.be.server.domain.payment.repository.PaymentRepository;
 import kr.hhplus.be.server.domain.reservation.entity.Reservation;

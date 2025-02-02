@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.hhplus.be.server.application.reservation.port.in.ReserveSeatRequest;
-import kr.hhplus.be.server.common.exception.CustomException;
-import kr.hhplus.be.server.common.exception.enums.ErrorCode;
+import kr.hhplus.be.server.support.exception.CustomException;
+import kr.hhplus.be.server.support.exception.enums.ErrorCode;
 import kr.hhplus.be.server.domain.reservation.entity.Reservation;
 import kr.hhplus.be.server.domain.reservation.entity.ReservationSeat;
 import kr.hhplus.be.server.domain.reservation.repository.ReservationRepository;

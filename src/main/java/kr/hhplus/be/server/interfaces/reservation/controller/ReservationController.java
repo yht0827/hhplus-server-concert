@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.hhplus.be.server.application.reservation.facade.ReservationFacade;
 import kr.hhplus.be.server.application.reservation.port.out.ReservationResponse;
-import kr.hhplus.be.server.common.annnotation.AuthorizationToken;
+import kr.hhplus.be.server.support.annnotation.AuthorizationToken;
 import kr.hhplus.be.server.interfaces.reservation.port.in.ReserveRequest;
 import kr.hhplus.be.server.interfaces.reservation.port.out.ReserveResponse;
 import lombok.RequiredArgsConstructor;

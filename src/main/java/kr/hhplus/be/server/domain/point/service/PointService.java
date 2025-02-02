@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 
 import kr.hhplus.be.server.application.payment.port.in.ChargePointRequest;
 import kr.hhplus.be.server.application.payment.port.in.PaymentRequest;
-import kr.hhplus.be.server.common.exception.CustomException;
-import kr.hhplus.be.server.common.exception.enums.ErrorCode;
+import kr.hhplus.be.server.support.exception.CustomException;
+import kr.hhplus.be.server.support.exception.enums.ErrorCode;
 import kr.hhplus.be.server.domain.point.entity.Point;
 import kr.hhplus.be.server.domain.point.entity.PointHistory;
 import kr.hhplus.be.server.domain.point.repository.PointRepository;

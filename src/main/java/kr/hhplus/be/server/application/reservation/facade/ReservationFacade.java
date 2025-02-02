@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.hhplus.be.server.application.reservation.port.in.ReserveSeatRequest;
 import kr.hhplus.be.server.application.reservation.port.out.ReservationResponse;
-import kr.hhplus.be.server.common.annnotation.DistributeLock;
+import kr.hhplus.be.server.support.annnotation.DistributeLock;
 import kr.hhplus.be.server.domain.concert.service.ConcertService;
 import kr.hhplus.be.server.domain.payment.entity.Payment;
 import kr.hhplus.be.server.domain.payment.service.PaymentService;

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.hhplus.be.server.application.payment.facade.PaymentFacade;
 import kr.hhplus.be.server.application.payment.port.out.PaymentResponse;
-import kr.hhplus.be.server.common.annnotation.AuthorizationToken;
+import kr.hhplus.be.server.support.annnotation.AuthorizationToken;
 import kr.hhplus.be.server.interfaces.payment.port.in.PaymentConcertRequest;
 import kr.hhplus.be.server.interfaces.payment.port.out.PaymentConcertResponse;
 import lombok.RequiredArgsConstructor;

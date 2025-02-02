@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import kr.hhplus.be.server.application.payment.port.in.PaymentRequest;
 import kr.hhplus.be.server.application.reservation.port.in.ReserveSeatRequest;
-import kr.hhplus.be.server.common.exception.CustomException;
-import kr.hhplus.be.server.common.exception.enums.ErrorCode;
+import kr.hhplus.be.server.support.exception.CustomException;
+import kr.hhplus.be.server.support.exception.enums.ErrorCode;
 import kr.hhplus.be.server.domain.concert.entity.ConcertSeat;
 import kr.hhplus.be.server.domain.concert.repository.ConcertRepository;
 import kr.hhplus.be.server.interfaces.concert.port.out.ConcertResponse;

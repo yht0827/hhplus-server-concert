@@ -7,7 +7,7 @@ import kr.hhplus.be.server.application.payment.port.in.ChargePointRequest;
 import kr.hhplus.be.server.application.payment.port.in.PaymentRequest;
 import kr.hhplus.be.server.application.payment.port.out.PaymentResponse;
 import kr.hhplus.be.server.application.payment.port.out.PointChargeResponse;
-import kr.hhplus.be.server.common.annnotation.DistributeLock;
+import kr.hhplus.be.server.support.annnotation.DistributeLock;
 import kr.hhplus.be.server.domain.concert.service.ConcertService;
 import kr.hhplus.be.server.domain.payment.entity.Payment;
 import kr.hhplus.be.server.domain.payment.service.PaymentService;

@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import kr.hhplus.be.server.common.response.PageResponse;
+import kr.hhplus.be.server.support.response.PageResponse;
 import kr.hhplus.be.server.interfaces.concert.port.in.ConcertDateRequest;
 import kr.hhplus.be.server.interfaces.concert.port.out.ConcertResponse;
 
