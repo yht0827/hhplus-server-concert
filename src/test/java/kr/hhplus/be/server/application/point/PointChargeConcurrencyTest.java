@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.point.application;
+package kr.hhplus.be.server.application.point;
 
 import static org.assertj.core.api.Assertions.*;
 

@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.payment.application;
+package kr.hhplus.be.server.application.payment;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -10,23 +10,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import kr.hhplus.be.server.application.payment.port.in.PaymentCommand;
-import kr.hhplus.be.server.support.BaseIntegrationTest;
 import kr.hhplus.be.server.domain.concert.entity.Concert;
 import kr.hhplus.be.server.domain.point.entity.Point;
 import kr.hhplus.be.server.domain.reservation.entity.Reservation;
 import kr.hhplus.be.server.domain.token.entity.Token;
 import kr.hhplus.be.server.domain.user.entity.User;
+import kr.hhplus.be.server.support.BaseIntegrationTest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@SpringBootTest
-@ActiveProfiles("test")
-@Testcontainers
 @DisplayName("결제 동시성 통합 테스트")
 public class PaymentConcurrencyTest extends BaseIntegrationTest {
 

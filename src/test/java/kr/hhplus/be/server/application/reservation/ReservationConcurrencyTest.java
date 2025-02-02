@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.reservation.application;
+package kr.hhplus.be.server.application.reservation;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -9,18 +9,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import kr.hhplus.be.server.application.reservation.port.in.ReserveCommand;
 import kr.hhplus.be.server.support.BaseIntegrationTest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@SpringBootTest
-@ActiveProfiles("test")
-@Testcontainers
 @DisplayName("좌석 예약 동시성 통합 테스트")
 public class ReservationConcurrencyTest extends BaseIntegrationTest {
 
