@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.hhplus.be.server.application.reservation.port.in.ReserveSeatRequest;
+import kr.hhplus.be.server.application.reservation.port.in.ReserveCommand;
 import kr.hhplus.be.server.support.exception.CustomException;
 import kr.hhplus.be.server.support.exception.enums.ErrorCode;
 import kr.hhplus.be.server.domain.reservation.entity.Reservation;
@@ -20,14 +20,14 @@ public class ReservationService {
 
 	private final ReservationRepository reservationRepository;
 
-	public Reservation reserve(final ReserveSeatRequest reserveSeatRequest) {
-		boolean isPresent = reservationRepository.findByConcertSeatId(reserveSeatRequest.concertSeatId()).isPresent();
+	public Reservation reserve(final ReserveCommand reserveCommand) {
+		boolean isPresent = reservationRepository.findByConcertSeatId(reserveCommand.concertSeatId()).isPresent();
 
 		if (isPresent) {
 			throw new CustomException(ErrorCode.CONCERT_SEAT_EXIST);
 		}
 
-		return reservationRepository.save(reserveSeatRequest.toReservationEntity());
+		return reservationRepository.save(reserveCommand.toReservationEntity());
 	}
 
 	public Reservation updateStatus(final Long reservationId) {

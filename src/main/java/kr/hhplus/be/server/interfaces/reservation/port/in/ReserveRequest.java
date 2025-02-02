@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.interfaces.reservation.port.in;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import kr.hhplus.be.server.application.reservation.port.in.ReserveSeatRequest;
+import kr.hhplus.be.server.application.reservation.port.in.ReserveCommand;
 
 public record ReserveRequest(
 	@Schema(description = "사용자 ID", example = "1")
@@ -13,7 +13,7 @@ public record ReserveRequest(
 	@Schema(description = "콘서트 좌석 번호", example = "1")
 	Integer seatNumber
 ) {
-	public ReserveSeatRequest toDto() {
-		return new ReserveSeatRequest(userId, concertSeatId, seatNumber);
+	public ReserveCommand toDto() {
+		return new ReserveCommand(userId, concertSeatId, seatNumber);
 	}
 }

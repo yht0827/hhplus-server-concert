@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.hhplus.be.server.application.reservation.port.in.ReserveSeatRequest;
+import kr.hhplus.be.server.application.reservation.port.in.ReserveCommand;
 import kr.hhplus.be.server.application.reservation.port.out.ReservationResponse;
 import kr.hhplus.be.server.support.annnotation.DistributeLock;
 import kr.hhplus.be.server.domain.concert.service.ConcertService;
@@ -29,19 +29,19 @@ public class ReservationFacade {
 
 	@DistributeLock(key = "'reserve:' + #reserveRequest.concertSeatId()")
 	@Transactional
-	public ReservationResponse reserve(final ReserveSeatRequest reserveSeatRequest) {
+	public ReservationResponse reserve(final ReserveCommand reserveCommand) {
 
 		// 좌석 상태 업데이트 변경
-		concertService.getAvailableSeat(reserveSeatRequest);
+		concertService.getAvailableSeat(reserveCommand);
 
 		// 예약 생성
-		Reservation reservation = reservationService.reserve(reserveSeatRequest);
+		Reservation reservation = reservationService.reserve(reserveCommand);
 
 		// 예약 - 좌석 테이블 생성
-		reservationService.createReservationSeat(reservation.getReservationId(), reserveSeatRequest.concertSeatId());
+		reservationService.createReservationSeat(reservation.getReservationId(), reserveCommand.concertSeatId());
 
 		// 가격 조회
-		Integer seatPrice = concertService.getSeatPrice(reserveSeatRequest);
+		Integer seatPrice = concertService.getSeatPrice(reserveCommand);
 
 		// 결제 생성
 		Payment payment = paymentService.createPayment(reservation, seatPrice);

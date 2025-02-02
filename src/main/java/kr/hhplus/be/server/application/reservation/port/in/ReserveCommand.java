@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import kr.hhplus.be.server.domain.reservation.entity.Reservation;
 
-public record ReserveSeatRequest(Long userId, Long concertSeatId, Integer seatNumber) {
+public record ReserveCommand(Long userId, Long concertSeatId, Integer seatNumber) {
 
 	public Reservation toReservationEntity() {
 		return Reservation.builder()

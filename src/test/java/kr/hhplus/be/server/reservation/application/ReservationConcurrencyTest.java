@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import kr.hhplus.be.server.application.reservation.port.in.ReserveSeatRequest;
+import kr.hhplus.be.server.application.reservation.port.in.ReserveCommand;
 import kr.hhplus.be.server.support.ServiceIntegrationTest;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,11 +35,11 @@ public class ReservationConcurrencyTest extends ServiceIntegrationTest {
 		AtomicInteger failCount = new AtomicInteger(0);
 
 		for (int i = 0; i < numberOfThreads; i++) {
-			ReserveSeatRequest reserveSeatRequest = new ReserveSeatRequest(((long)i + 1), 1L, 1);
+			ReserveCommand reserveCommand = new ReserveCommand(((long)i + 1), 1L, 1);
 
 			executorService.submit(() -> {
 				try {
-					reservationFacade.reserve(reserveSeatRequest);
+					reservationFacade.reserve(reserveCommand);
 					successCount.incrementAndGet();
 				} catch (Exception e) {
 					failCount.incrementAndGet();
