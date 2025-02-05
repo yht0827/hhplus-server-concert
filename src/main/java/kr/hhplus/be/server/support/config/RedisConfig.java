@@ -6,6 +6,10 @@ import org.redisson.config.Config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import lombok.NoArgsConstructor;
 
@@ -19,12 +23,29 @@ public class RedisConfig {
 	@Value("${spring.data.redis.port}")
 	private int redisPort;
 
-	private static final String REDISSON_HOST_PREFIX = "redis://";
+	@Value("${spring.data.redisson.address}")
+	private String redissonAddress;
 
-	@Bean
+	@Bean(destroyMethod = "shutdown")
 	public RedissonClient redissonClient() {
 		Config config = new Config();
-		config.useSingleServer().setAddress(REDISSON_HOST_PREFIX + redisHost + ":" + redisPort);
+		config.useSingleServer().setAddress(redissonAddress);
 		return Redisson.create(config);
+	}
+
+	@Bean
+	public RedisConnectionFactory redisConnectionFactory() {
+		return new LettuceConnectionFactory(redisHost, redisPort); // Redis 서버 주소와 포트
+	}
+
+	@Bean
+	public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
+		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+		redisTemplate.setConnectionFactory(connectionFactory);
+
+		redisTemplate.setKeySerializer(new StringRedisSerializer());
+		redisTemplate.setValueSerializer(new StringRedisSerializer());
+
+		return redisTemplate;
 	}
 }
