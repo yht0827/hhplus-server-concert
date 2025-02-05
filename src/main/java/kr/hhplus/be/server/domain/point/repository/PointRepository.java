@@ -6,7 +6,6 @@ import kr.hhplus.be.server.domain.point.entity.Point;
 import kr.hhplus.be.server.domain.point.entity.PointHistory;
 
 public interface PointRepository {
-	Point savePoint(final Point point);
 
 	PointHistory savePointHistory(final PointHistory pointHistory);
 

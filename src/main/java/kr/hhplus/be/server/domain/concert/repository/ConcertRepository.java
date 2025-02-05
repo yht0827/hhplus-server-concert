@@ -6,15 +6,12 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import kr.hhplus.be.server.domain.concert.entity.Concert;
 import kr.hhplus.be.server.domain.concert.entity.ConcertSeat;
 import kr.hhplus.be.server.interfaces.concert.port.out.ConcertResponse;
 
 public interface ConcertRepository {
 
 	ConcertSeat save(final ConcertSeat concertSeat);
-
-	Optional<Concert> findConcertById(final Long concertId);
 
 	Page<ConcertResponse.ConcertDateResponse> getAvailableConcertList(final Pageable pageable);
 

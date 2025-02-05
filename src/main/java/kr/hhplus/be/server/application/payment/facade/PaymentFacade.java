@@ -3,11 +3,10 @@ package kr.hhplus.be.server.application.payment.facade;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.hhplus.be.server.application.payment.port.in.ChargePointRequest;
-import kr.hhplus.be.server.application.payment.port.in.PaymentRequest;
-import kr.hhplus.be.server.application.payment.port.out.PaymentResponse;
-import kr.hhplus.be.server.application.payment.port.out.PointChargeResponse;
-import kr.hhplus.be.server.common.annnotation.DistributeLock;
+import kr.hhplus.be.server.application.payment.port.in.ChargeCommand;
+import kr.hhplus.be.server.application.payment.port.in.PaymentCommand;
+import kr.hhplus.be.server.application.payment.port.out.PaymentInfo;
+import kr.hhplus.be.server.application.payment.port.out.ChargeInfo;
 import kr.hhplus.be.server.domain.concert.service.ConcertService;
 import kr.hhplus.be.server.domain.payment.entity.Payment;
 import kr.hhplus.be.server.domain.payment.service.PaymentService;
@@ -16,6 +15,7 @@ import kr.hhplus.be.server.domain.point.entity.PointHistory;
 import kr.hhplus.be.server.domain.point.service.PointService;
 import kr.hhplus.be.server.domain.reservation.service.ReservationService;
 import kr.hhplus.be.server.domain.token.service.TokenService;
+import kr.hhplus.be.server.support.annnotation.DistributeLock;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -27,14 +27,14 @@ public class PaymentFacade {
 	private final ReservationService reservationService;
 	private final ConcertService concertService;
 
-	@DistributeLock(key = "'charge:' + #ChargePointRequest.userId()")
+	@DistributeLock(key = "'charge:' + #chargePointRequest.userId()")
 	@Transactional
-	public PointChargeResponse chargePoint(final ChargePointRequest chargePointRequest) {
-		Point point = pointService.chargePoint(chargePointRequest);
+	public ChargeInfo chargePoint(final ChargeCommand chargeCommand) {
+		Point point = pointService.chargePoint(chargeCommand);
 
-		PointHistory pointHistory = pointService.chargePointHistory(point, chargePointRequest);
+		PointHistory pointHistory = pointService.chargePointHistory(point, chargeCommand);
 
-		return PointChargeResponse.toDto(pointHistory);
+		return ChargeInfo.toDto(pointHistory);
 	}
 
 	@Transactional(readOnly = true)
@@ -42,28 +42,28 @@ public class PaymentFacade {
 		return pointService.getPoint(pointId);
 	}
 
-	@DistributeLock(key = "'payment:' + #PaymentRequest.reservationId()")
+	@DistributeLock(key = "'payment:' + #paymentRequest.reservationId()")
 	@Transactional
-	public PaymentResponse paymentConcert(final PaymentRequest paymentRequest) {
+	public PaymentInfo paymentConcert(final PaymentCommand paymentCommand) {
 
 		// 좌석 상태 업데이트
-		reservationService.updateStatus(paymentRequest.reservationId());
+		reservationService.updateStatus(paymentCommand.reservationId());
 
 		// 결제 정보 업데이트
-		Payment payment = paymentService.paymentConcert(paymentRequest);
+		Payment payment = paymentService.paymentConcert(paymentCommand);
 
 		// 콘서트 좌석 개수 감소
-		concertService.decreaseSeatCount(paymentRequest);
+		concertService.decreaseSeatCount(paymentCommand);
 
 		// 포인트 차감
-		Point point = pointService.usePoint(paymentRequest);
+		Point point = pointService.usePoint(paymentCommand);
 
 		// 포인트 사용 내역 저장
 		pointService.usePointHistory(point);
 
 		// 토큰 만료 (ACTIVE -> EXPIRED)
-		tokenService.updateExpireToken(paymentRequest.userId());
+		tokenService.updateExpireToken(paymentCommand.userId());
 
-		return PaymentResponse.toDto(payment);
+		return PaymentInfo.toDto(payment);
 	}
 }

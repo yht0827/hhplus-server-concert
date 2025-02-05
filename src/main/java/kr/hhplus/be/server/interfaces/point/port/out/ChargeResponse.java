@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.interfaces.point.port.out;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import kr.hhplus.be.server.application.payment.port.out.PointChargeResponse;
+import kr.hhplus.be.server.application.payment.port.out.ChargeInfo;
 import kr.hhplus.be.server.domain.point.entity.PointHistory;
 import lombok.Builder;
 
@@ -16,11 +16,11 @@ public record ChargeResponse(
 	@Schema(description = "포인트 타입", example = "CHARGE")
 	PointHistory.PointTypeEnum type
 ) {
-	public static ChargeResponse toDto(final PointChargeResponse pointChargeResponse) {
+	public static ChargeResponse toDto(final ChargeInfo chargeInfo) {
 		return ChargeResponse.builder()
-			.amount(pointChargeResponse.amount())
-			.message(pointChargeResponse.message())
-			.type(pointChargeResponse.type())
+			.amount(chargeInfo.amount())
+			.message(chargeInfo.message())
+			.type(chargeInfo.type())
 			.build();
 	}
 }

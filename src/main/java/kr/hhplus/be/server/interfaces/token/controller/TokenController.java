@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.hhplus.be.server.application.token.facade.TokenFacade;
-import kr.hhplus.be.server.application.token.port.out.SignTokenResponse;
+import kr.hhplus.be.server.application.token.port.out.TokenInfo;
 import kr.hhplus.be.server.interfaces.token.port.in.TokenRequest;
 import kr.hhplus.be.server.interfaces.token.port.out.TokenResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +22,8 @@ public class TokenController implements TokenAPI {
 
 	@PostMapping("/create")
 	public ResponseEntity<TokenResponse> create(@RequestBody final TokenRequest tokenRequest) {
-		SignTokenResponse signTokenResponse = tokenFacade.createToken(tokenRequest.toDto());
-
-		TokenResponse response = TokenResponse.toDto(signTokenResponse);
+		TokenInfo tokenInfo = tokenFacade.createToken(tokenRequest.toDto());
+		TokenResponse response = TokenResponse.toDto(tokenInfo);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}

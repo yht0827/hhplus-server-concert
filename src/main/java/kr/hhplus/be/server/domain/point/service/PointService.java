@@ -2,10 +2,10 @@ package kr.hhplus.be.server.domain.point.service;
 
 import org.springframework.stereotype.Service;
 
-import kr.hhplus.be.server.application.payment.port.in.ChargePointRequest;
-import kr.hhplus.be.server.application.payment.port.in.PaymentRequest;
-import kr.hhplus.be.server.common.exception.CustomException;
-import kr.hhplus.be.server.common.exception.enums.ErrorCode;
+import kr.hhplus.be.server.application.payment.port.in.ChargeCommand;
+import kr.hhplus.be.server.application.payment.port.in.PaymentCommand;
+import kr.hhplus.be.server.support.exception.CustomException;
+import kr.hhplus.be.server.support.exception.enums.ErrorCode;
 import kr.hhplus.be.server.domain.point.entity.Point;
 import kr.hhplus.be.server.domain.point.entity.PointHistory;
 import kr.hhplus.be.server.domain.point.repository.PointRepository;
@@ -19,34 +19,34 @@ public class PointService {
 
 	private final PointRepository pointRepository;
 
-	public Point chargePoint(final ChargePointRequest chargePointRequest) {
-		Point point = pointRepository.findPointByUserId(chargePointRequest.userId())
+	public Point chargePoint(final ChargeCommand chargeCommand) {
+		Point point = pointRepository.findPointByUserId(chargeCommand.userId())
 			.orElseThrow(() -> new CustomException(ErrorCode.POINT_NOT_FOUND));
 
-		point.chargePoint(chargePointRequest.point());
+		point.chargePoint(chargeCommand.point());
 
 		log.info("charge point: {}", point.getBalance());
 		return point;
 	}
 
-	public Point usePoint(final PaymentRequest paymentRequest) {
-		Point point = pointRepository.findPointByUserId(paymentRequest.userId())
+	public Point usePoint(final PaymentCommand paymentCommand) {
+		Point point = pointRepository.findPointByUserId(paymentCommand.userId())
 			.orElseThrow(() -> new CustomException(ErrorCode.POINT_NOT_FOUND));
 
-		if (point.getBalance() < paymentRequest.price()) {
+		if (point.getBalance() < paymentCommand.price()) {
 			throw new CustomException(ErrorCode.NOT_ENOUGH_BALANCE);
 		}
 
-		point.usePoint(paymentRequest.price());
+		point.usePoint(paymentCommand.price());
 
 		log.info("use point: {}", point.getBalance());
 		return point;
 	}
 
-	public PointHistory chargePointHistory(final Point point, final ChargePointRequest chargePointRequest) {
+	public PointHistory chargePointHistory(final Point point, final ChargeCommand chargeCommand) {
 		PointHistory pointHistory = PointHistory.builder()
 			.pointId(point.getPointId())
-			.amount(chargePointRequest.point())
+			.amount(chargeCommand.point())
 			.type(PointHistory.PointTypeEnum.CHARGE)
 			.comment(String.format("%d원 충전", point.getBalance()))
 			.build();

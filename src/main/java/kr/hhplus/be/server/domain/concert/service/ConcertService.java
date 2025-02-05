@@ -9,10 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import kr.hhplus.be.server.application.payment.port.in.PaymentRequest;
-import kr.hhplus.be.server.application.reservation.port.in.ReserveSeatRequest;
-import kr.hhplus.be.server.common.exception.CustomException;
-import kr.hhplus.be.server.common.exception.enums.ErrorCode;
+import kr.hhplus.be.server.application.payment.port.in.PaymentCommand;
+import kr.hhplus.be.server.application.reservation.port.in.ReserveCommand;
+import kr.hhplus.be.server.support.exception.CustomException;
+import kr.hhplus.be.server.support.exception.enums.ErrorCode;
 import kr.hhplus.be.server.domain.concert.entity.ConcertSeat;
 import kr.hhplus.be.server.domain.concert.repository.ConcertRepository;
 import kr.hhplus.be.server.interfaces.concert.port.out.ConcertResponse;
@@ -59,8 +59,8 @@ public class ConcertService {
 			));
 	}
 
-	public ConcertSeat getAvailableSeat(final ReserveSeatRequest reserveSeatRequest) {
-		ConcertSeat concertSeat = concertRepository.findByConcertSeatId(reserveSeatRequest.concertSeatId())
+	public ConcertSeat getAvailableSeat(final ReserveCommand reserveCommand) {
+		ConcertSeat concertSeat = concertRepository.findByConcertSeatId(reserveCommand.concertSeatId())
 			.orElseThrow(() -> new CustomException(ErrorCode.SEAT_NOT_FOUND));
 
 		if (concertSeat.getIsOccupied())
@@ -71,11 +71,11 @@ public class ConcertService {
 		return concertSeat;
 	}
 
-	public Integer getSeatPrice(final ReserveSeatRequest reserveSeatRequest) {
-		return concertRepository.getConcertPrice(reserveSeatRequest.concertSeatId());
+	public Integer getSeatPrice(final ReserveCommand reserveCommand) {
+		return concertRepository.getConcertPrice(reserveCommand.concertSeatId());
 	}
 
-	public void decreaseSeatCount(final PaymentRequest paymentRequest) {
-		concertRepository.decreaseConcertSeatNumber(paymentRequest.concertId());
+	public void decreaseSeatCount(final PaymentCommand paymentCommand) {
+		concertRepository.decreaseConcertSeatNumber(paymentCommand.concertId());
 	}
 }
