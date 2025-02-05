@@ -8,6 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import kr.hhplus.be.server.application.payment.facade.PaymentFacade;
 import kr.hhplus.be.server.application.reservation.facade.ReservationFacade;
+import kr.hhplus.be.server.domain.user.repository.UserRepository;
 import kr.hhplus.be.server.infrastructure.concert.ConcertJpaRepository;
 import kr.hhplus.be.server.infrastructure.payment.PaymentJpaRepository;
 import kr.hhplus.be.server.infrastructure.point.PointJpaRepository;
@@ -43,6 +44,9 @@ public abstract class BaseIntegrationTest {
 
 	@Autowired
 	protected ReservationFacade reservationFacade;
+
+	@Autowired
+	protected UserRepository userRepository;
 
 	@Autowired
 	private DataCleaner dataCleaner;
