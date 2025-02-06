@@ -19,10 +19,4 @@ public class TokenScheduler {
 		Long size = tokenService.updateActiveToken();
 		log.info("Wait -> Active 된 토큰 개수: {}", size);
 	}
-
-	@Scheduled(fixedRate = 60000)
-	public void processExpireTokens() {
-		Long size = tokenService.updateExpireToken();
-		log.info("expired 된 토큰 개수: {}", size);
-	}
 }
