@@ -8,12 +8,13 @@ import org.springframework.test.context.ActiveProfiles;
 
 import kr.hhplus.be.server.application.payment.facade.PaymentFacade;
 import kr.hhplus.be.server.application.reservation.facade.ReservationFacade;
+import kr.hhplus.be.server.domain.token.repository.TokenRepository;
+import kr.hhplus.be.server.domain.token.service.TokenService;
 import kr.hhplus.be.server.domain.user.repository.UserRepository;
 import kr.hhplus.be.server.infrastructure.concert.ConcertJpaRepository;
 import kr.hhplus.be.server.infrastructure.payment.PaymentJpaRepository;
 import kr.hhplus.be.server.infrastructure.point.PointJpaRepository;
 import kr.hhplus.be.server.infrastructure.reservation.ReservationJpaRepository;
-import kr.hhplus.be.server.infrastructure.token.TokenJpaRepository;
 import kr.hhplus.be.server.infrastructure.user.UserJpaRepository;
 
 @Import(TestContainerConfiguration.class)
@@ -34,9 +35,6 @@ public abstract class BaseIntegrationTest {
 	protected ReservationJpaRepository reservationJpaRepository;
 
 	@Autowired
-	protected TokenJpaRepository tokenJpaRepository;
-
-	@Autowired
 	protected PaymentFacade paymentFacade;
 
 	@Autowired
@@ -49,10 +47,17 @@ public abstract class BaseIntegrationTest {
 	protected UserRepository userRepository;
 
 	@Autowired
+	protected TokenService tokenService;
+
+	@Autowired
+	protected TokenRepository tokenRepository;
+
+	@Autowired
 	private DataCleaner dataCleaner;
 
 	@BeforeEach
 	void setUp() {
 		dataCleaner.cleanUp();
+		tokenRepository.flushAll();
 	}
 }
