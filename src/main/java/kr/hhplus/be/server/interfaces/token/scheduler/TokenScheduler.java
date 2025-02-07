@@ -14,7 +14,7 @@ public class TokenScheduler {
 
 	private final TokenService tokenService;
 
-	@Scheduled(fixedRate = 20000)
+	@Scheduled(fixedRate = 30000)
 	public void processActiveTokens() {
 		Long size = tokenService.updateActiveToken();
 		log.info("Wait -> Active 된 토큰 개수: {}", size);

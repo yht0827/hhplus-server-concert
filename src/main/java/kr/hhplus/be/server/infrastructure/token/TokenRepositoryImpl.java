@@ -17,8 +17,7 @@ public class TokenRepositoryImpl implements TokenRepository {
 
 	private final RedisTemplate<String, String> redisTemplate;
 	private static final String WAIT_QUEUE = "waitQueue";
-	private static final String ACTIVE_TOKEN = "activeToken:";
-	private static final String VALUE = "value:";
+	private static final String ACTIVE_TOKEN = "active:";
 	private static final Integer ACTIVE_TOKEN_TIME = 10;
 	private static final Integer MAX_TOKEN_NUMBER = 50;
 
@@ -30,11 +29,6 @@ public class TokenRepositoryImpl implements TokenRepository {
 	public String createWaitToken(final String userId) {
 		redisTemplate.opsForZSet().add(WAIT_QUEUE, userId, System.currentTimeMillis());
 		return userId;
-	}
-
-	@Override
-	public Integer countWaitToken() {
-		return Objects.requireNonNull(redisTemplate.opsForZSet().range(WAIT_QUEUE, 0, -1)).size();
 	}
 
 	@Override
@@ -50,7 +44,7 @@ public class TokenRepositoryImpl implements TokenRepository {
 	@Override
 	public Long updateWaitTokens(final List<String> tokens) {
 		tokens.forEach(token -> redisTemplate.opsForValue()
-			.set(ACTIVE_TOKEN + token, VALUE + token, ACTIVE_TOKEN_TIME, TimeUnit.MINUTES));
+			.set(ACTIVE_TOKEN + token, token, ACTIVE_TOKEN_TIME, TimeUnit.MINUTES));
 
 		return (long)tokens.size();
 	}

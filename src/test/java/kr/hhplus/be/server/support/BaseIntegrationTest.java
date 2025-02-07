@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
 import kr.hhplus.be.server.application.payment.facade.PaymentFacade;
@@ -54,6 +55,9 @@ public abstract class BaseIntegrationTest {
 
 	@Autowired
 	private DataCleaner dataCleaner;
+
+	@Autowired
+	protected RedisTemplate<String, String> redisTemplate;
 
 	@BeforeEach
 	void setUp() {
