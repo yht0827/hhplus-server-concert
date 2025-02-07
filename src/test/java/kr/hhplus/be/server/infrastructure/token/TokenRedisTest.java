@@ -2,10 +2,11 @@ package kr.hhplus.be.server.infrastructure.token;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import kr.hhplus.be.server.application.token.port.in.TokenCommand;
 import kr.hhplus.be.server.support.BaseIntegrationTest;
 
 @DisplayName("redis 토큰 테스트")
@@ -15,8 +16,8 @@ public class TokenRedisTest extends BaseIntegrationTest {
 	@Test
 	void tokenCreateTest() {
 		// given
-		TokenCommand tokenCommand = new TokenCommand(1L);
-		tokenService.createWaitToken(tokenCommand);
+		String token = "1";
+		tokenRepository.createWaitToken(token);
 
 		//when
 		Integer waitTokenCount = tokenRepository.countWaitToken();
@@ -29,32 +30,32 @@ public class TokenRedisTest extends BaseIntegrationTest {
 	@Test
 	void activeTokenUpdateTest() {
 		// given
-		String userId = "1";
-		TokenCommand tokenCommand = new TokenCommand(1L);
-		tokenService.createWaitToken(tokenCommand);
+		String token = "1";
+		tokenRepository.createWaitToken(token);
 
 		//when
-		tokenService.updateActiveToken();
-		String token = tokenRepository.getActiveToken(userId);
+		List<String> waitTokens = tokenRepository.getAllWaitTokens();
+		tokenRepository.updateWaitTokens(waitTokens);
 
 		//then
-		String activeToken = "value:1";
-		assertThat(token).isEqualTo(activeToken);
+		String activeToken = tokenRepository.getActiveToken(token);
+		assertThat(activeToken).isEqualTo("value:1");
 	}
 
 	@DisplayName("redis 토큰 만료")
 	@Test
 	void expiredTokenUpdateTest() {
 		// given
-		TokenCommand tokenCommand = new TokenCommand(1L);
-		tokenService.createWaitToken(tokenCommand);
-		tokenService.updateActiveToken();
+		String token = "1";
+		tokenRepository.createWaitToken(token);
+		List<String> waitTokens = tokenRepository.getAllWaitTokens();
+		tokenRepository.updateWaitTokens(waitTokens);
 
 		//when
-		tokenService.updateExpireToken(1L);
+		tokenRepository.removeActiveToken(token);
 
 		//then
-		Integer token = tokenRepository.countWaitToken();
-		assertThat(token).isZero();
+		String activeToken = tokenRepository.getActiveToken(token);
+		assertThat(activeToken).isNull();
 	}
 }
