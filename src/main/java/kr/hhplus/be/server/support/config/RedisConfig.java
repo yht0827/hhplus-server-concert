@@ -23,13 +23,18 @@ public class RedisConfig {
 	@Value("${spring.data.redis.port}")
 	private int redisPort;
 
-	@Value("${spring.data.redisson.address}")
-	private String redissonAddress;
+	@Value("${spring.data.redisson.host}")
+	private String redissonHost;
+
+	@Value("${spring.data.redisson.port}")
+	private String redissonPort;
+
+	private static final String REDISSON_HOST_PREFIX = "redis://";
 
 	@Bean(destroyMethod = "shutdown")
 	public RedissonClient redissonClient() {
 		Config config = new Config();
-		config.useSingleServer().setAddress(redissonAddress);
+		config.useSingleServer().setAddress(REDISSON_HOST_PREFIX + redisHost + ":" + redisPort);
 		return Redisson.create(config);
 	}
 

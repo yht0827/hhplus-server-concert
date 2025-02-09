@@ -13,6 +13,4 @@ public interface TokenRepository {
 	String getActiveToken(final String userId);
 
 	String removeActiveToken(final String userId);
-
-	void flushAll();
 }

@@ -9,6 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import kr.hhplus.be.server.application.payment.facade.PaymentFacade;
 import kr.hhplus.be.server.application.reservation.facade.ReservationFacade;
+import kr.hhplus.be.server.application.token.facade.TokenFacade;
 import kr.hhplus.be.server.domain.token.repository.TokenRepository;
 import kr.hhplus.be.server.domain.token.service.TokenService;
 import kr.hhplus.be.server.domain.user.repository.UserRepository;
@@ -51,6 +52,9 @@ public abstract class BaseIntegrationTest {
 	protected TokenService tokenService;
 
 	@Autowired
+	protected TokenFacade tokenFacade;
+
+	@Autowired
 	protected TokenRepository tokenRepository;
 
 	@Autowired
@@ -62,6 +66,6 @@ public abstract class BaseIntegrationTest {
 	@BeforeEach
 	void setUp() {
 		dataCleaner.cleanUp();
-		tokenRepository.flushAll();
+		redisTemplate.delete(redisTemplate.keys("*"));
 	}
 }

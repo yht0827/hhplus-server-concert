@@ -1,7 +1,6 @@
 package kr.hhplus.be.server.infrastructure.token;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -60,13 +59,4 @@ public class TokenRepositoryImpl implements TokenRepository {
 		return redisTemplate.opsForValue()
 			.getAndDelete(ACTIVE_TOKEN + userId);
 	}
-
-	@Override
-	public void flushAll() {
-		Objects.requireNonNull(redisTemplate.getConnectionFactory())
-			.getConnection()
-			.serverCommands()
-			.flushAll();
-	}
-
 }
