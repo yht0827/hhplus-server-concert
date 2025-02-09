@@ -15,7 +15,6 @@ import kr.hhplus.be.server.application.payment.port.in.PaymentCommand;
 import kr.hhplus.be.server.domain.concert.entity.Concert;
 import kr.hhplus.be.server.domain.point.entity.Point;
 import kr.hhplus.be.server.domain.reservation.entity.Reservation;
-import kr.hhplus.be.server.domain.token.entity.Token;
 import kr.hhplus.be.server.domain.user.entity.User;
 import kr.hhplus.be.server.support.BaseIntegrationTest;
 import lombok.extern.slf4j.Slf4j;
@@ -94,13 +93,5 @@ public class PaymentConcurrencyTest extends BaseIntegrationTest {
 			.build();
 
 		reservationJpaRepository.save(reservation);
-
-		Token token = Token.builder()
-			.userId(1L)
-			.tokenStatus(Token.TokenStatus.ACTIVE)
-			.expiredAt(LocalDateTime.now().plusMinutes(5))
-			.build();
-
-		tokenJpaRepository.save(token);
 	}
 }

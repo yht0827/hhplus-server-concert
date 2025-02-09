@@ -1,6 +1,5 @@
 package kr.hhplus.be.server.support.aop;
 
-import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -9,11 +8,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import kr.hhplus.be.server.domain.token.service.TokenService;
 import kr.hhplus.be.server.support.exception.CustomException;
 import kr.hhplus.be.server.support.exception.enums.ErrorCode;
 import kr.hhplus.be.server.support.util.TokenUtil;
-import kr.hhplus.be.server.domain.token.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,8 +42,7 @@ public class AuthorizationTokenAop {
 		// 토큰 ID 복호화
 		String decryptTokenId = TokenUtil.decrypt(tokenId);
 
-		// 토큰 DB 조회 여부 체크
-		tokenService.checkValidToken(Long.valueOf(decryptTokenId));
+		// 토큰 redis 조회 여부 체크
+		tokenService.checkValidToken(decryptTokenId);
 	}
-
 }
