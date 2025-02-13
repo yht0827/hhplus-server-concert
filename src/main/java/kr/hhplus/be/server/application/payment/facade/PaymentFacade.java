@@ -61,7 +61,7 @@ public class PaymentFacade {
 		// 포인트 사용 내역 저장
 		pointService.usePointHistory(point);
 
-		// 토큰 만료 (ACTIVE -> EXPIRED)
+		// 토큰 제거
 		tokenService.updateExpireToken(paymentCommand.userId());
 
 		return PaymentInfo.toDto(payment);
