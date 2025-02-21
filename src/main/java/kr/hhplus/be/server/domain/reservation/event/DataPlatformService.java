@@ -8,11 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class DataPlatformService {
 
-	public void sendReservationData(final Long reservationId) {
+	public void sendReservationData(final String reservationId) {
 
 		try {
-			Thread.sleep(10000);
-			// kafka
+			Thread.sleep(100);
+
 		} catch (InterruptedException e) {
 			log.error("Failed to send reservation data to data platform", e);
 		}
