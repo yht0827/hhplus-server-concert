@@ -23,6 +23,7 @@ public enum ErrorCode {
 	PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "결제가 존재하지 않습니다."),
 	PAYMENT_FINISHED(HttpStatus.BAD_REQUEST, "이미 결제 완료되었습니다."),
 	DISTRIBUTE_LOCK_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "분산 락 오류"),
+	OUTBOX_NOT_FOUND(HttpStatus.NOT_FOUND, "outbox가 존재하지 않습니다."),
 	;
 
 	private final HttpStatus status;
