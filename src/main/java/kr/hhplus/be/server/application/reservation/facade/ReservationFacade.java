@@ -10,13 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.hhplus.be.server.application.reservation.port.in.ReserveCommand;
 import kr.hhplus.be.server.application.reservation.port.out.ReserveInfo;
-import kr.hhplus.be.server.support.annnotation.DistributeLock;
 import kr.hhplus.be.server.domain.concert.service.ConcertService;
 import kr.hhplus.be.server.domain.payment.entity.Payment;
 import kr.hhplus.be.server.domain.payment.service.PaymentService;
 import kr.hhplus.be.server.domain.reservation.entity.Reservation;
+import kr.hhplus.be.server.domain.reservation.event.ReservationEventPublisher;
+import kr.hhplus.be.server.domain.reservation.event.ReservedEvent;
 import kr.hhplus.be.server.domain.reservation.service.ReservationService;
 import kr.hhplus.be.server.interfaces.concert.port.out.ConcertResponse;
+import kr.hhplus.be.server.support.annnotation.DistributeLock;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -26,6 +28,7 @@ public class ReservationFacade {
 	private final ReservationService reservationService;
 	private final ConcertService concertService;
 	private final PaymentService paymentService;
+	private final ReservationEventPublisher reservationEventPublisher;
 
 	@DistributeLock(key = "'reserve:' + #reserveRequest.concertSeatId()")
 	@Transactional
@@ -45,6 +48,8 @@ public class ReservationFacade {
 
 		// 결제 생성
 		Payment payment = paymentService.createPayment(reservation, seatPrice);
+
+		reservationEventPublisher.publish(new ReservedEvent(reservation.getReservationId()));
 
 		return ReserveInfo.toDto(reservation, payment);
 	}

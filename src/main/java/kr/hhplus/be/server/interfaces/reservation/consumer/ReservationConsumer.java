@@ -6,17 +6,38 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import kr.hhplus.be.server.domain.outbox.entity.Outbox;
+import kr.hhplus.be.server.domain.outbox.service.OutboxService;
+import kr.hhplus.be.server.domain.reservation.event.DataPlatformService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class ReservationConsumer {
 
-	@KafkaListener(groupId = "myGroup", topics = "test-topic")
-	public void test(ConsumerRecord<String, String> data, Acknowledgment acknowledgment,
+	private final OutboxService outboxService;
+	private final DataPlatformService dataPlatformService;
+	private final ObjectMapper objectMapper;
+
+	@KafkaListener(groupId = "outbox-group", topics = "concert.concert-reserved")
+	public void consumeOutbox(ConsumerRecord<String, String> data, Acknowledgment acknowledgment,
 		Consumer<String, String> consumer) {
-		log.info("Consumed message: topic={}, partition={}, offset={}, key={}, value={}",
-			data.topic(), data.partition(), data.offset(), data.key(), data.value());
+		final String eventKey = data.key();
+		outboxService.publish(eventKey);
+		acknowledgment.acknowledge();
+	}
+
+	@KafkaListener(groupId = "external-platform-group", topics = "concert.concert-reserved")
+	public void consumeExternalPlatform(ConsumerRecord<String, String> data, Acknowledgment acknowledgment,
+		Consumer<String, String> consumer) throws JsonProcessingException {
+		Outbox outbox = objectMapper.readValue(data.value(), Outbox.class);
+		final String payload = outbox.getPayload();
+		dataPlatformService.sendReservationData(payload);
 		acknowledgment.acknowledge();
 	}
 }

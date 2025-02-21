@@ -5,6 +5,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import kr.hhplus.be.server.domain.outbox.service.OutboxService;
+import kr.hhplus.be.server.infrastructure.reservation.ReservationProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,17 +17,17 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ReservationEventListener {
 
-	private final DataPlatformService dataPlatformService;
+	private final OutboxService outboxService;
+	private final ReservationProducer reservationProducer;
+
+	@TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
+	public void saveOutbox(final ReservedEvent event) throws JsonProcessingException {
+		outboxService.createOutbox(event.getClass().getSimpleName(), event.eventKey(), event);
+	}
 
 	@Async
 	@TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
 	public void handle(final ReservedEvent event) {
-		try {
-			log.info("예약 데이터 전송: {}", event.reservationId());
-			dataPlatformService.sendReservationData(event.reservationId());
-		} catch (Exception e) {
-			log.error("데이터 플랫폼 전송 실패: {}", e.getMessage());
-		}
+		reservationProducer.send("concert.concert-reserved", event.eventKey(), event);
 	}
-
 }
